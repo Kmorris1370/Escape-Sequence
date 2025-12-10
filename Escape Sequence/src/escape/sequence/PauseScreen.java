@@ -74,6 +74,7 @@ public class PauseScreen extends javax.swing.JFrame {
         jButton2.setContentAreaFilled(false);
         jButton2.setText("Resume");
         jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, new java.awt.Color(0, 0, 0), java.awt.Color.black, java.awt.Color.black));
+        jButton2.setContentAreaFilled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -131,7 +132,6 @@ public class PauseScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         RulesScreen tutorial = new RulesScreen();
         tutorial.setVisible(true);
-        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     //Resume
