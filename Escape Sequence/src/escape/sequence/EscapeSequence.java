@@ -1,20 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package escape.sequence;
 
 /**
- *
- * @author ak3ra
+ * @author Akera Griffith & Kaitlyn Morris
+ * Escape Sequence Main Class
  */
 public class EscapeSequence {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        TitleInterface titleScreen = new TitleInterface();
+        titleScreen.setVisible(true);
     }
     
 }
