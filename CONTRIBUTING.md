@@ -5,7 +5,7 @@ This document outlines the standards and practices to follow when contributing t
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 ```
 escape-sequence/
 ├── src/
@@ -62,17 +62,9 @@ public *NameOfGUI* () {
 
 ---
 
-## 🔤 Loading Fonts
+## Loading Fonts
 
 **Always use `FontLoader` — never set fonts manually or through the NetBeans properties panel.**
-
-### Available font sizes:
-```java
-FontLoader.getVT323(18f)   // Small — body text, labels
-FontLoader.getVT323(24f)   // Medium — buttons, subheadings
-FontLoader.getVT323(48f)   // Large — screen headers
-FontLoader.getVT323(72f)   // Title — main game title only
-```
 
 ### How to apply a font to a component in generated code:
 ```java
@@ -92,46 +84,14 @@ myButton.setFont(FontLoader.getVT323(24f));
 - Font files must stay in `assets.font` in the Projects panel
 
 ---
-
-## 🖥️ Creating a New Screen
-
-When creating a new UI screen follow these steps:
-
-1. Right click `escapesequence.UI` → New → JFrame Form
-2. Name it clearly e.g. `GameScreen`, `ResultScreen`
-3. Add this import at the top of the file:
-```java
-import escapesequence.*;
-```
-4. Set all fonts using `FontLoader` in the Design view or generated code
-5. Set all images using `ResourceLoader` in the constructor after `initComponents()`
-6. **Never** use the NetBeans image chooser dialog
-7. Make sure the `backgroundLabel` is added **first** in the Navigator panel so it sits behind all other components
-
----
-
-## 🔀 GitHub Workflow
+## GitHub Workflow
 
 1. Always **pull before you start working** to get the latest changes:
    - In NetBeans: Team → Pull
    - Or in terminal: `git pull`
-2. Commit often with clear descriptive messages:
-   ```
-   ✅ Good: "Add ResourceLoader image scaling method"
-   ❌ Bad:  "fixed stuff"
-   ```
+2. Commit often with clear descriptive messages
 3. Never commit directly to `main` if possible — use a branch for larger features
 4. After committing, let the other team member know via messaging so they can pull
 
 ---
 
-## ⚠️ Common Mistakes to Avoid
-
-| Mistake | What to do instead |
-|---|---|
-| Using NetBeans image chooser dialog | Use `ResourceLoader.loadImageScaled()` in the constructor |
-| Setting fonts manually in properties | Use `FontLoader.getVT323()` in Design view custom code |
-| Using SVG image files | Convert to PNG first |
-| Hardcoding file paths | Always use classpath paths starting with `/assets/` |
-| Adding `backgroundLabel` last in the panel | Add it first so it doesn't cover other components |
-| Committing `.class` or `build/` files | These are in `.gitignore` — don't force add them |
