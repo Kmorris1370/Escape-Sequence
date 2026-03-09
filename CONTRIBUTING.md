@@ -42,26 +42,17 @@ escape-sequence/
 
 ---
 
-## 🖼️ Loading Images
+## Loading Images
 
 **Always use `ResourceLoader` — never use the NetBeans image chooser dialog.** Using the dialog hardcodes a file path that will break on other machines.
 
 ### How to load a background image:
 ```java
-public MyScreen() {
+public *NameOfGUI* () {
     initComponents();
     backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/yourimage.png", width, height));
 }
 ```
-
-### How to load an icon on a button:
-```java
-public MyScreen() {
-    initComponents();
-    myButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/icon.png", 40, 40));
-}
-```
-
 ### Rules:
 - Always call image loading **after** `initComponents()` in the constructor
 - Always use `loadImageScaled()` with the exact width and height of the component
