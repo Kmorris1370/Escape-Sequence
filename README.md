@@ -4,6 +4,8 @@
 A first-person 2D survival card game built in Java using JFrame/Swing. Players are trapped aboard a failing spaceship and must fight their way through three deadly obstacles to reach the escape pods — but with only 3 pods and up to 6 players, survival is far from guaranteed.
 
 > Inspired by the atmosphere of *Resident Evil 7* DLC "21" and *Mouthwashing.*
+#### Title Screen
+<img width="874" height="446" alt="Screenshot 2026-03-09 014458" src="https://github.com/user-attachments/assets/1c506129-1a34-432d-93c3-2d1fe5d880f1" />
 
 ---
 
@@ -107,10 +109,11 @@ Players may hold their Round 2 specialty card and use both cards in Round 3. The
 escape-sequence/
 ├── src/
 │   └── escapesequence/
-│       ├── FontLoader                   # Load in chosen font
 │       ├── EscapeSequence.java          # Entry Point
 │       ├── Index.java                   # 
 │       └── UI/
+│           ├── FontLoader               # Font load shortcut
+│           ├── ResourceLoader           # Loads font and images
 │           ├── TitleInterface.java      # Main menu GUI
 │           ├── Round1.java              # 1st gameplay screen
 │           ├── Round2.java              # 2nd gameplay screen
@@ -128,7 +131,7 @@ escape-sequence/
 │   ├── ActivityDiagram.png              # UML Activity Diagram
 │   └── UseCaseDiagram.png               # UML Use Case Diagram
 ├── assets/
-│   ├── images/                          # Game art and screen assets
+│   ├── pictures/                        # Game art and screen assets
 │   └── font                             # Font file
 ├── tutorials
 ├── .gitignore
@@ -154,7 +157,7 @@ escape-sequence/
 
 ---
 ## Acknowledgemnts 
-Visual aesthetic used from Mouthwashing by Wrong Organ.
+#### Visual aesthetic used from Mouthwashing by Wrong Organ.
 ---
 ## Team
 
