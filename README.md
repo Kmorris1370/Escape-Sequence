@@ -136,6 +136,7 @@ escape-sequence/
 ├── tutorials
 ├── .gitignore
 ├── LICENSE
+├── CONTRIBUTING
 └── README.md
 ```
 
