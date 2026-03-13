@@ -4,42 +4,32 @@
 This document outlines the standards and practices to follow when contributing to this project. Please read this before writing any new code or creating new screens.
 
 ---
+## Code Contributions
 
-## Project Structure
-```
-escape-sequence/
-├── src/
-│   └── escapesequence/
-│       ├── EscapeSequence.java          # Entry Point
-│       ├── Index.java                   # 
-│       └── UI/
-│           ├── FontLoader               # Font load shortcut
-│           ├── ResourceLoader           # Loads font and images
-│           ├── TitleInterface.java      # Main menu GUI
-│           ├── Round1.java              # 1st gameplay screen
-│           ├── Round2.java              # 2nd gameplay screen
-│           ├── Round3.java              # 3rd gameplay screen
-│           ├── RulesScreen.java         # Tutorial pop-up screen
-│           ├── PauseScreen.java         # Pause pop-up screen
-│           ├── SinglePlayer.java        # Single player screen
-│           ├── Multiplayer.java         # Multiplayer screen
-│           ├── ConformationScreen.java  # Confirmation pop-up screen
-│           └── Settings.java            # Settings screen
-├── docs/
-│   ├── SRS.pdf                          # Software Requirements Specification
-│   ├── ProjectManagementPlan.pdf        # Project Management Plan
-│   ├── GameDesignDocument.pdf           # Game Design Document
-│   ├── ActivityDiagram.png              # UML Activity Diagram
-│   └── UseCaseDiagram.png               # UML Use Case Diagram
-├── assets/
-│   ├── pictures/                        # Game art and screen assets
-│   └── font                             # Font file
-├── tutorials
-├── .gitignore
-├── LICENSE
-└── README.md
-```
 
+| File | Package | Methods |
+|------|---------|---------|
+| `AIPlayer.java` | `escapesequence` | `advanceRound()`, `getRound()`, `shouldHit()`, `shouldUseSpecialtyCard()` |
+| `Card.java` | `escapesequence` | `getValue()`, `isFaceUp()`, `flip()`, `toString()` |
+| `Deck.java` | `escapesequence` | `buildDeck(numPlayers)`, `shuffle()`, `drawCard()`, `size()` |
+| `EscapeSequence.java` | `escapesequence` | TBD |
+| `Index.java` | `escapesequence` | TBD |
+| `Player.java` | `escapesequence` | `getName()`, `hasKeycard()`, `giveKeycard()`, `isAlive()`, `eliminate()`, `isFrozen()`, `setFrozen(frozen)`, `receiveCard(card)`, `getHandTotal()`, `getHand()`, `clearHand()`, `receiveSpecialtyCard(card)`, `useSpecialtyCard(index)`, `getSpecialtyCards()`, `hasSpecialtyCards()`, `toString()` |
+| `SpecialtyCard.java` | `escapesequence` | `getType()`, `toString()` |
+| `SpecialtyDeck.java` | `escapesequence` | `buildDeck(numPlayers)`, `shuffle()`, `drawCard()`, `size()` |
+| `ConfirmationScreen.java` | `escapesequence.UI` | TBD |
+| `FontLoader.java` | `escapesequence.UI` | `Font` |
+| `TitleInterface.java` | `escapesequence.UI` | TBD |
+| `Multiplayer.java` | `escapesequence.UI` | TBD |
+| `PauseScreen.java` | `escapesequence.UI` | TBD |
+| `ResourceLoader.java` | `escapesequence.UI` | `loadFont`, `fallbackFont`, `loadImageScaled` |
+| `Round1.java` | `escapesequence.UI` | TBD |
+| `Round2.java` | `escapesequence.UI` | TBD |
+| `Round3.java` | `escapesequence.UI` | TBD |
+| `RulesScreen.java` | `escapesequence.UI` | TBD |
+| `Settings.java` | `escapesequence.UI` | TBD |
+| `SinglePlayer.java` | `escapesequence.UI` | TBD |
+ 
 ---
 
 ## Loading Images
