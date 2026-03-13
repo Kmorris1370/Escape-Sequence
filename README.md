@@ -47,7 +47,7 @@ Starting in Round 2, players are dealt specialty cards that can turn the tide of
 | 🔄 **Reverse** | The drawn card is subtracted from your total instead of added |
 | ❄️ **Freeze** | Prevent a chosen player from hitting on their next turn |
 | 🔀 **Swap** | Swap one of your face-up cards with one of the AI's |
-| 👁️ **Peek** | View either the AI's hidden card or the next card in the deck |
+| 👁️ **Peek** | View the next card in the deck |
 
 Players may hold their Round 2 specialty card and use both cards in Round 3. The AI always saves its specialty card for Round 3 — making the final round the most dangerous.
 
@@ -109,34 +109,40 @@ Players may hold their Round 2 specialty card and use both cards in Round 3. The
 escape-sequence/
 ├── src/
 │   └── escapesequence/
-│       ├── EscapeSequence.java          # Entry Point
+│       ├── AIPlayer.java                # AI opponent logic and aggression scaling
+│       ├── Card.java                    # Single card with value and face-up/down state
+│       ├── Deck.java                    # Numbered deck, scales with player count
+│       ├── EscapeSequence.java          # Entry point
 │       ├── Index.java                   # 
+│       ├── Player.java                  # Player state, hand, keycard, specialty cards
+│       ├── SpecialtyCard.java           # Specialty card types and descriptions
+│       ├── SpecialtyDeck.java           # Specialty deck, scales with player count
 │       └── UI/
-│           ├── FontLoader               # Font load shortcut
-│           ├── ResourceLoader           # Loads font and images
-│           ├── TitleInterface.java      # Main menu GUI
+│           ├── ConfirmationScreen.java  # Confirmation pop-up screen
+│           ├── FontLoader.java          # Font load shortcut
+│           ├── Multiplayer.java         # Multiplayer screen
+│           ├── PauseScreen.java         # Pause pop-up screen
+│           ├── ResourceLoader.java      # Loads fonts and images
 │           ├── Round1.java              # 1st gameplay screen
 │           ├── Round2.java              # 2nd gameplay screen
 │           ├── Round3.java              # 3rd gameplay screen
 │           ├── RulesScreen.java         # Tutorial pop-up screen
-│           ├── PauseScreen.java         # Pause pop-up screen
+│           ├── Settings.java            # Settings screen
 │           ├── SinglePlayer.java        # Single player screen
-│           ├── Multiplayer.java         # Multiplayer screen
-│           ├── ConformationScreen.java  # Confirmation pop-up screen
-│           └── Settings.java            # Settings screen
+│           └── MainMenu.java      # Main menu GUI
+├── assets/
+│   ├── pictures/                        # Game art and card images
+│   └── font/                            # Font files
 ├── docs/
 │   ├── SRS.pdf                          # Software Requirements Specification
 │   ├── ProjectManagementPlan.pdf        # Project Management Plan
 │   ├── GameDesignDocument.pdf           # Game Design Document
 │   ├── ActivityDiagram.png              # UML Activity Diagram
 │   └── UseCaseDiagram.png               # UML Use Case Diagram
-├── assets/
-│   ├── pictures/                        # Game art and screen assets
-│   └── font                             # Font file
-├── tutorials
+├── tutorials/                           
 ├── .gitignore
 ├── LICENSE
-├── CONTRIBUTING
+├── CONTRIBUTING.md
 └── README.md
 ```
 
