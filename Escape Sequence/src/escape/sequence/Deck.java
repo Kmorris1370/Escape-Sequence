@@ -46,7 +46,7 @@ public class Deck extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(0, 0, 255));
         jButton2.setText("<html><u>INDEX</u></html> ");
         jButton2.setContentAreaFilled(false);
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 300, 100, 40));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 310, 100, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\ak3ra\\Documents\\WIU\\Year 2\\Fall 25\\CS 491\\SE Project\\ES\\Deck.png")); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 360));
