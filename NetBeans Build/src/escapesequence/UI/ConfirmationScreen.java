@@ -7,7 +7,9 @@ public class ConfirmationScreen extends javax.swing.JFrame {
      */
     public ConfirmationScreen() {
         initComponents();
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/ConfirmationScreen.jpg",300, 230));
+        setSize(800,500);
+        setLocationRelativeTo(null);
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/ConfirmationScreen.jpg",800, 500));
     }
 
     /**
@@ -65,7 +67,7 @@ public class ConfirmationScreen extends javax.swing.JFrame {
         titleLabel2.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel2.setText("want to quit?");
         jPanel1.add(titleLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, -1, -1));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 230));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

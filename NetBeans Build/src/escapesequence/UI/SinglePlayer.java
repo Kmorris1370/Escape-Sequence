@@ -1,7 +1,6 @@
-//change
-//checklist
+
 package escapesequence.UI;
-import javax.swing.JOptionPane;
+
 /**
  * @author Akera Griffith & Kaitlyn Morris
  * Escape Sequence Single Player Interface
@@ -13,8 +12,11 @@ public class SinglePlayer extends javax.swing.JFrame {
      */
     public SinglePlayer() {
         initComponents();
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/WarningScreens.jpg",590,300));
-        backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",40,40));
+        setSize(1200,700);
+        
+        //Set Images
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/WarningScreens.jpg",1200,700));
+        backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",60,60));
     }
 
     /**
@@ -38,49 +40,52 @@ public class SinglePlayer extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        titleLabel.setFont(FontLoader.getVT323(48f));
+        titleLabel.setFont(FontLoader.getVT323(70f));
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Surviving Crew");
-        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, 280, 40));
+        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1200, 70));
 
-        nameLabel.setFont(FontLoader.getVT323(30f));
+        nameLabel.setFont(FontLoader.getVT323(48f));
         nameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         nameLabel.setText("Name:");
-        jPanel1.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, -1, -1));
+        jPanel1.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 290, 120, 40));
 
         nameInputField.setBackground(new java.awt.Color(0, 0, 0));
+        nameInputField.setForeground(new java.awt.Color(255, 255, 255));
         nameInputField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameInputFieldActionPerformed(evt);
             }
         });
-        jPanel1.add(nameInputField, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, 160, 30));
+        jPanel1.add(nameInputField, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 290, 210, 50));
 
         backButton.setBackground(new java.awt.Color(0, 0, 0, 100));
         backButton.setContentAreaFilled(false);
         backButton.setBorder(null);
+        backButton.setFocusPainted(false);
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+        jPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 80, 80));
 
-        startButton.setFont(FontLoader.getVT323(24f));
+        startButton.setFont(FontLoader.getVT323(40f));
         startButton.setBackground(new java.awt.Color(0, 0, 0, 0));
         startButton.setForeground(new java.awt.Color(255, 255, 255));
         startButton.setContentAreaFilled(false);
         startButton.setText("Start");
         startButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 0, 0), new java.awt.Color(102, 0, 0), new java.awt.Color(102, 0, 0), new java.awt.Color(102, 0, 0)));
+        startButton.setFocusPainted(false);
         startButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(startButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, 130, 40));
-
-        backgroundLabel.setText("jLabel1");
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 300));
+        jPanel1.add(startButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 500, 240, 90));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,9 +116,10 @@ public class SinglePlayer extends javax.swing.JFrame {
     //Start
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         // TODO add your handling code here:
-        Round1 round1 = new Round1();
-        round1.setVisible(true);
+        RulesScreen tutorial = new RulesScreen(RulesScreen.Source.SINGLE_PLAYER);
+        tutorial.setVisible(true);
         dispose();
+    
     }//GEN-LAST:event_startButtonActionPerformed
 
     /**

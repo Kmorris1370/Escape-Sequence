@@ -3,6 +3,7 @@ package escapesequence;
 /**
  *
  * @author Akera Griffith & Kaitlyn Morris
+ * Deck Class
  */
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Deck {
     //Adds one set of cards 1-9 per player
     private void buildDeck(int numPlayers) {
         for (int p = 0; p < numPlayers + 1; p++) {
-            for (int i = 1; i <= 0; i++) {
+            for (int i = 1; i <= 9; i++) {
                 cards.add(i);
             }
         }
@@ -42,5 +43,11 @@ public class Deck {
     //Returns how many cards are left 
     public int size() {
         return cards.size();
+    }
+    
+    //For Peek Specialty Card
+    public int peekCard() {
+        if (cards.isEmpty()) return -1;
+        return cards.get(0); //Looks at the card w/o removing it
     }
 }

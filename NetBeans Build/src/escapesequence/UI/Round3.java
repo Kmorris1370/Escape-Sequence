@@ -5,14 +5,20 @@ package escapesequence.UI;
  * @author Akera Griffith & Kaitlyn Morris
  * Escape Sequence Round3 Interface
  */
+import escapesequence.*;
+import java.util.ArrayList;
+
 public class Round3 extends javax.swing.JFrame {
 
     /**
      * Creates new form Round3
      */
-    public Round3() {
+    GameController gameController;
+    public Round3(GameController gameController) {
+        this.gameController = gameController;
         initComponents();
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Round3.jpg",590,300));
+        setSize(1200,700);
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Round3.jpg",1200,700));
         pauseButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Pause.png",40,40));
         aiCardLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfCard.jpg",40,60));
         deckLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfCards.jpg",60,40));
@@ -32,18 +38,12 @@ public class Round3 extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         pauseButton = new javax.swing.JButton();
-        p1CardButton2 = new javax.swing.JButton();
-        p2CardButton2 = new javax.swing.JButton();
-        aiCardButton1 = new javax.swing.JButton();
         aiCardLabel = new javax.swing.JLabel();
         aiSpecialtyCard1 = new javax.swing.JLabel();
         deckLabel = new javax.swing.JLabel();
         p2SpecialtyCardLabel = new javax.swing.JLabel();
         specialtyCardTitle = new javax.swing.JLabel();
-        p2CardButton1 = new javax.swing.JButton();
-        p1CardButton1 = new javax.swing.JButton();
         specialtyCardLabel = new javax.swing.JLabel();
-        p2Label = new javax.swing.JLabel();
         p1Label = new javax.swing.JLabel();
         stayButton = new javax.swing.JButton();
         hitButton = new javax.swing.JButton();
@@ -64,27 +64,6 @@ public class Round3 extends javax.swing.JFrame {
         });
         jPanel1.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 40));
 
-        p1CardButton2.setBackground(new java.awt.Color(153, 153, 153));
-        p1CardButton2.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        p1CardButton2.setForeground(new java.awt.Color(0, 0, 0));
-        p1CardButton2.setText("5");
-        p1CardButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(p1CardButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, 40, 60));
-
-        p2CardButton2.setBackground(new java.awt.Color(153, 153, 153));
-        p2CardButton2.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        p2CardButton2.setForeground(new java.awt.Color(0, 0, 0));
-        p2CardButton2.setText("1");
-        p2CardButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(p2CardButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 40, 60));
-
-        aiCardButton1.setBackground(new java.awt.Color(153, 153, 153));
-        aiCardButton1.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        aiCardButton1.setForeground(new java.awt.Color(0, 0, 0));
-        aiCardButton1.setText("7");
-        aiCardButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(aiCardButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, 40, 60));
-
         aiCardLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         jPanel1.add(aiCardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 60, 40, 60));
         jPanel1.add(aiSpecialtyCard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 40, 40));
@@ -99,26 +78,7 @@ public class Round3 extends javax.swing.JFrame {
         specialtyCardTitle.setText("Peek");
         specialtyCardTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jPanel1.add(specialtyCardTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 40, 40));
-
-        p2CardButton1.setBackground(new java.awt.Color(153, 153, 153));
-        p2CardButton1.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        p2CardButton1.setForeground(new java.awt.Color(0, 0, 0));
-        p2CardButton1.setText("3");
-        p2CardButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(p2CardButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 170, 40, 60));
-
-        p1CardButton1.setBackground(new java.awt.Color(153, 153, 153));
-        p1CardButton1.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        p1CardButton1.setForeground(new java.awt.Color(0, 0, 0));
-        p1CardButton1.setText("8");
-        p1CardButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(p1CardButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 170, 40, 60));
         jPanel1.add(specialtyCardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 40, 40));
-
-        p2Label.setFont(FontLoader.getVT323(18f));
-        p2Label.setForeground(new java.awt.Color(255, 255, 255));
-        p2Label.setText("Akera");
-        jPanel1.add(p2Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 230, -1, -1));
 
         p1Label.setFont(FontLoader.getVT323(18f));
         p1Label.setForeground(new java.awt.Color(255, 255, 255));
@@ -148,7 +108,7 @@ public class Round3 extends javax.swing.JFrame {
         specialtyCardButton.setText("Use");
         specialtyCardButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black));
         jPanel1.add(specialtyCardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 60, -1));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 300));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -201,25 +161,21 @@ public class Round3 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Round3().setVisible(true);
+                ArrayList<escapesequence.Player> players = new ArrayList<>();
+                players.add(new escapesequence.Player("Player 1"));
+                new Round3(new escapesequence.GameController(players)).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton aiCardButton1;
     private javax.swing.JLabel aiCardLabel;
     private javax.swing.JLabel aiSpecialtyCard1;
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JLabel deckLabel;
     private javax.swing.JButton hitButton;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton p1CardButton1;
-    private javax.swing.JButton p1CardButton2;
     private javax.swing.JLabel p1Label;
-    private javax.swing.JButton p2CardButton1;
-    private javax.swing.JButton p2CardButton2;
-    private javax.swing.JLabel p2Label;
     private javax.swing.JLabel p2SpecialtyCardLabel;
     private javax.swing.JButton pauseButton;
     private javax.swing.JButton specialtyCardButton;

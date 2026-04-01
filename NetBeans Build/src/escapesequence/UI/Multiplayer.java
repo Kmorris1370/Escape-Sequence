@@ -12,7 +12,8 @@ public class Multiplayer extends javax.swing.JFrame {
      */
     public Multiplayer() {
         initComponents();
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/WarningScreens.jpg",590,300));
+        setSize(1200,700);
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/WarningScreens.jpg",1200,700));
         arrowButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",40,40));
         starLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Star.png",40,40));
     }
@@ -40,6 +41,7 @@ public class Multiplayer extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(1200, 700));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titleLabel.setFont(FontLoader.getVT323(48f));
@@ -104,7 +106,7 @@ public class Multiplayer extends javax.swing.JFrame {
         p2Label.setText("Akera");
         p2Label.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(p2Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 130, 60, -1));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 300));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

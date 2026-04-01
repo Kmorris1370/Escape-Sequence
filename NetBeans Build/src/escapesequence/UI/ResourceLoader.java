@@ -40,6 +40,10 @@ public class ResourceLoader {
             return fallbackFont(size);
         }
     }
+    
+    public static ImageIcon loadCardImage(int value) {
+        return loadImageScaled("/assets/pictures/" + value + ".jpg", 50, 50);
+    }
 
     /**
      * Fallback font in case the custom font fails to load.

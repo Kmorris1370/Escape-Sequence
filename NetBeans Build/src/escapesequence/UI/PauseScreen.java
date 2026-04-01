@@ -1,4 +1,4 @@
-//change
+
 package escapesequence.UI;
 
 /**
@@ -12,7 +12,9 @@ public class PauseScreen extends javax.swing.JFrame {
      */
     public PauseScreen() {
         initComponents();
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Space1.jpg",590,300));
+        setSize(800,500);
+        setLocationRelativeTo(null);
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Space1.jpg",800,500));
         backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",40,40));
         tutorialButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Video.png",40,40));
     }
@@ -97,7 +99,7 @@ public class PauseScreen extends javax.swing.JFrame {
         jPanel1.add(quitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, 80, 40));
 
         backgroundLabel.setText("jLabel1");
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 300));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,7 +132,7 @@ public class PauseScreen extends javax.swing.JFrame {
     //Tutorial
     private void tutorialButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tutorialButtonActionPerformed
         // TODO add your handling code here:
-        RulesScreen tutorial = new RulesScreen();
+        RulesScreen tutorial = new RulesScreen(RulesScreen.Source.PAUSE);
         tutorial.setVisible(true);
     }//GEN-LAST:event_tutorialButtonActionPerformed
 

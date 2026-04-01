@@ -3,6 +3,7 @@ package escapesequence;
 /**
  *
  * @author Akera Griffith & Kaitlyn Morris
+ * Card Class
  */
 
 public class Card {
@@ -14,10 +15,12 @@ public class Card {
         this.faceUp = faceUp;
     }
     
+    //Return Value
     public int getValue() {
         return value;
     }
     
+    //True if face up
     public boolean isFaceUp() {
         return faceUp;
     }
@@ -26,15 +29,5 @@ public class Card {
     public void flip() {
         faceUp = !faceUp;
     }
-    
-    //For displaying cards in UI 
-    //Returns the value if face-up, otherwise hides it
-    @Override
-    public String toString(){
-        if (faceUp) {
-            return String.valueOf(value);
-        } else {
-            return "[?]";
-        }
-    }
+      
 }

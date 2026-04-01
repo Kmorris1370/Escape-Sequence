@@ -3,7 +3,10 @@ package escapesequence;
 /**
  *
  * @author Akera Griffith & Kaitlyn Morris
+ * AI Player Class
  */
+
+import java.util.ArrayList;
 
 public class AIPlayer extends Player {
     private int round;
@@ -18,14 +21,32 @@ public class AIPlayer extends Player {
         this.round = 1;
     }
     
+    //Go to next round
     public void advanceRound() {
         if (round < 3) {
             round++;
         }
     }
     
+    //Return round
     public int getRound() {
         return round;
+    }
+    
+    //Turn decision
+    public void takeTurn(Deck deck, ArrayList<Player> opponents) {
+        //Stop turn if frozen
+        if (isFrozen()) {
+            setFrozen(false); 
+            return;
+        }
+        
+        while (shouldHit()) {
+            int drawnValue = deck.drawCard();
+            if (drawnValue == -1) break;
+            
+            recieveCard(new Card(drawnValue, false));
+        }
     }
     
     //Return true is AI should hit based on the round threshhold 

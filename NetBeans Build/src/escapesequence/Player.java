@@ -3,6 +3,7 @@ package escapesequence;
 /**
  *
  * @author Akera Griffith & Kaitlyn Morris
+ * Player Class
  */
 
 import java.util.ArrayList;
@@ -24,26 +25,37 @@ public class Player {
         this.isFrozen = false;
     }
     
+    //Get Name
     public String getName() {
         return name;
     }
     
+    //True if has keycard
     public boolean hasKeycard() {
         return hasKeycard;
     }
     
+    //True if player is alive
     public boolean isAlive(){
         return isAlive; 
     }
     
+    //True if player is dead
     public void eliminate() {
         isAlive = false;
     }
     
+    //True if players hand is over 21
+    public boolean isBust() {
+        return getHandTotal() > 21;
+    }
+    
+    //True if the player has been frozen
     public boolean isFrozen() {
         return isFrozen;
     }
     
+    //Freeze player after they've been frozen
     public void setFrozen(boolean frozen) {
         isFrozen = frozen;
     }
@@ -84,16 +96,18 @@ public class Player {
         return null;
     }
     
+    //Returns specialty cards
     public ArrayList<SpecialtyCard> getSpecialtyCards(){
         return specialtyCards;
     }
     
+    //Return true if player has specialty cards
     public boolean hasSpecialtyCards() {
         return !specialtyCards.isEmpty();
     }
     
-    @Override
-    public String toString(){
-        return name + " | Total: " + getHandTotal() + " | Keycard: " + hasKeycard + " | Alive: " + isAlive;
+    //Gives player a keycard
+    public void awardKeycard() {
+        hasKeycard = true;
     }
 }
