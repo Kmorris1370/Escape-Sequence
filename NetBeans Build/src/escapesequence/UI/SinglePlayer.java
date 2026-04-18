@@ -1,17 +1,18 @@
-
 package escapesequence.UI;
 
 /**
  * @author Akera Griffith & Kaitlyn Morris
  * Escape Sequence Single Player Interface
  */
+
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+
 public class SinglePlayer extends javax.swing.JFrame {
 
-    /**
-     * Creates new form SinglePlayer
-     */
     public SinglePlayer() {
         initComponents();
+        paneDesign();
         setSize(1200,700);
         
         //Set Images
@@ -113,13 +114,40 @@ public class SinglePlayer extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
+    //Design for the JOptionPane
+    private void paneDesign () {
+        UIManager.put("OptionPane.background", new java.awt.Color(10, 10, 15));
+        UIManager.put("Panel.background", new java.awt.Color(10, 10, 15));
+        UIManager.put("OptionPane.messageForeground", new java.awt.Color(198, 40, 40));
+        UIManager.put("OptionPane.messageFont", FontLoader.getVT323(24f));
+        UIManager.put("Button.background", new java.awt.Color(20, 20, 20));
+        UIManager.put("Button.foreground", new java.awt.Color(255, 255, 255));
+        UIManager.put("Button.font", FontLoader.getVT323(24f));
+        UIManager.put("Button.border", javax.swing.BorderFactory.createBevelBorder(
+            javax.swing.border.BevelBorder.RAISED,
+                new java.awt.Color(102, 0, 0),
+                new java.awt.Color(102, 0, 0),
+                new java.awt.Color(102, 0, 0),
+                new java.awt.Color(102, 0, 0)));
+    }
+    
     //Start
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        // TODO add your handling code here:
-        RulesScreen tutorial = new RulesScreen(RulesScreen.Source.SINGLE_PLAYER);
+        String name = nameInputField.getText().trim();
+
+        //Validate name
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter a name to continue.",
+                "No Name Entered",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        RulesScreen tutorial = new RulesScreen(RulesScreen.Source.SINGLE_PLAYER, name);
         tutorial.setVisible(true);
         dispose();
-    
+     
     }//GEN-LAST:event_startButtonActionPerformed
 
     /**

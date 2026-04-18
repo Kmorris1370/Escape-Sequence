@@ -1,21 +1,19 @@
-
 package escapesequence.UI;
 
 /**
  * @author Akera Griffith & Kaitlyn Morris
  * Escape Sequence Rules Interface
  */
+
 public class RulesScreen extends javax.swing.JFrame {
 
-    /**
-     * Creates new form RulesScreen
-     */
-    
-    public enum Source { MAIN_MENU, SINGLE_PLAYER, PAUSE }
+    public enum Source { MAIN_MENU, SINGLE_PLAYER, PAUSE, MULTIPLAYER }
     private Source source;
+    private String playerName;
 
-    public RulesScreen(Source source) {
+    public RulesScreen(Source source, String playerName) {
         this.source = source;
+        this.playerName = playerName;
         initComponents();
         jPanel1.setComponentZOrder(backgroundLabel, jPanel1.getComponentCount() - 1);
         setSize(1200,700);
@@ -298,7 +296,7 @@ public class RulesScreen extends javax.swing.JFrame {
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
         // TODO add your handling code here:
         if (source == Source.SINGLE_PLAYER) {
-            Round1 round1 = new Round1();
+            Round1 round1 = new Round1(playerName);
             round1.setVisible(true);
         }
         dispose();
@@ -334,7 +332,7 @@ public class RulesScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RulesScreen(RulesScreen.Source.MAIN_MENU).setVisible(true);
+                new RulesScreen(RulesScreen.Source.MAIN_MENU, "").setVisible(true);
             }
         });
     }

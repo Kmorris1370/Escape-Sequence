@@ -1,10 +1,12 @@
-
 package escapesequence.UI;
 
 /**
  * @author Akera Griffith & Kaitlyn Morris
  * Escape Sequence Multiplayer Interface
  */
+
+import javax.swing.JOptionPane;
+
 public class Multiplayer extends javax.swing.JFrame {
 
     /**
@@ -137,8 +139,19 @@ public class Multiplayer extends javax.swing.JFrame {
     //Start
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         // TODO add your handling code here:
-        Round1 round1 = new Round1();
-        round1.setVisible(true);
+        String name = nameInputField.getText().trim();
+
+        //Validate name
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter a name to continue.",
+                "No Name Entered",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        RulesScreen tutorial = new RulesScreen(RulesScreen.Source.MULTIPLAYER, name);
+        tutorial.setVisible(true);
         dispose();
     }//GEN-LAST:event_startButtonActionPerformed
 

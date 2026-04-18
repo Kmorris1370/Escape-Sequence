@@ -1,11 +1,11 @@
 package escapesequence.UI;
 
-import escapesequence.*; 
-
 /**
  * @author Akera Griffith & Kaitlyn Morris
- * Escape Sequence Title Interface
+ * Escape Sequence Main Menu
  */
+
+import escapesequence.*; 
 
 public class MainMenu extends javax.swing.JFrame {
 
@@ -180,7 +180,7 @@ public class MainMenu extends javax.swing.JFrame {
     //Tutorial
     private void tutorialButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tutorialButtonActionPerformed
         // TODO add your handling code here:
-        RulesScreen tutorial = new RulesScreen(RulesScreen.Source.MAIN_MENU);
+        RulesScreen tutorial = new RulesScreen(RulesScreen.Source.MAIN_MENU,"");
         tutorial.setVisible(true);
     }//GEN-LAST:event_tutorialButtonActionPerformed
 

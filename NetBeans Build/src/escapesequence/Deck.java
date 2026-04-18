@@ -1,7 +1,6 @@
 package escapesequence;
 
 /**
- *
  * @author Akera Griffith & Kaitlyn Morris
  * Deck Class
  */

@@ -132,7 +132,7 @@ public class PauseScreen extends javax.swing.JFrame {
     //Tutorial
     private void tutorialButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tutorialButtonActionPerformed
         // TODO add your handling code here:
-        RulesScreen tutorial = new RulesScreen(RulesScreen.Source.PAUSE);
+        RulesScreen tutorial = new RulesScreen(RulesScreen.Source.PAUSE,"");
         tutorial.setVisible(true);
     }//GEN-LAST:event_tutorialButtonActionPerformed
 

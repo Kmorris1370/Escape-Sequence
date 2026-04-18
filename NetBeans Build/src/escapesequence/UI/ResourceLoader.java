@@ -10,19 +10,10 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;              
 import java.io.InputStream;
 import javax.swing.ImageIcon;
+
 public class ResourceLoader {
 
-
-    // -------------------------------------------------------------------------
-    // FONTS
-    // -------------------------------------------------------------------------
-
-    /**
-     * Loads and registers a font from the classpath.
-     * @param path  classpath path e.g. "/assets/font/vt323Font.ttf"
-     * @param size  desired font size in points
-     * @return      the loaded Font, or a fallback Arial font if loading fails
-     */
+    //Method to load the font
     public static Font loadFont(String path, float size) {
         try {
             InputStream stream = ResourceLoader.class.getResourceAsStream(path);
@@ -41,29 +32,17 @@ public class ResourceLoader {
         }
     }
     
-    public static ImageIcon loadCardImage(int value) {
-        return loadImageScaled("/assets/pictures/" + value + ".jpg", 50, 50);
-    }
-
-    /**
-     * Fallback font in case the custom font fails to load.
-     */
+    //Fallback font incase the issue with loading the desired font
     private static Font fallbackFont(float size) {
         return new Font("Arial", Font.PLAIN, (int) size);
     }
-
-    // -------------------------------------------------------------------------
-    // IMAGES
-    // -------------------------------------------------------------------------
-
-    /**
-     * Loads and scales an image to the specified dimensions.
-     * Best used for background images that need to fit a panel or screen.
-     * @param path      classpath path e.g. "/assets/pictures/background.png"
-     * @param width     desired width in pixels
-     * @param height    desired height in pixels
-     * @return          scaled ImageIcon, or null if loading fails
-     */
+    
+    //Method to get the image url or the cards
+    public static ImageIcon loadCardImage(int value) {
+        return loadImageScaled("/assets/pictures/" + value + ".jpg", 50, 50);
+    }
+    
+    //Method to load images
     public static ImageIcon loadImageScaled(String path, int width, int height) {
         try {
             java.net.URL imgURL = ResourceLoader.class.getResource(path);

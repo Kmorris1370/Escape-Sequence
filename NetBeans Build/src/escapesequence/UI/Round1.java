@@ -22,7 +22,7 @@ public class Round1 extends javax.swing.JFrame {
     private Player player;
     
     /** Creates new form Round1 */
-    public Round1() {
+    public Round1(String playerName) {
         setSize(1200,700);
         initComponents();
         initCardSlots();  
@@ -38,7 +38,7 @@ public class Round1 extends javax.swing.JFrame {
         deckLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfCard.jpg",50,50));
         
         //Set up game
-        setupGame();
+        setupGame(playerName);
         startRound();
 
         //Wire buttons
@@ -47,7 +47,7 @@ public class Round1 extends javax.swing.JFrame {
     }
     
     //Initalizing
-    private void setupGame() {
+    private void setupGame(String playername) {
         //Create single player
         player = new Player("Player 1");
         ArrayList<Player> players = new ArrayList<>();
@@ -65,31 +65,23 @@ public class Round1 extends javax.swing.JFrame {
         resetCardDisplay();
         gameController.startRound();
 
-        //Display player's 2 opening cards
-        for (Card card : player.getHand()) {
-            addCardToDisplay(card.getValue());
+        //Ask controller for opening cards — no direct hand access
+        for (int val : gameController.getPlayerOpeningCards(player)) {
+            addCardToDisplay(val);
         }
+        dealAIOpeningCards(
+            gameController.getAIVisibleCard(),
+            gameController.getAIHiddenCard()
+        );
 
-        //Display AI's opening cards
-        int visibleCard = gameController.getAI().getHand().get(0).getValue();
-        int hiddenCard  = gameController.getAI().getHand().get(1).getValue();
-        dealAIOpeningCards(visibleCard, hiddenCard);
-
-        //Update hit button state
         hitButton.setEnabled(gameController.playerCanHit(player));
     }
     
     //Hit Function
     private void onHit() {
         gameController.playerHit(player);
-
-        //Display the card just drawn 
-        Card drawn = player.getHand().get(player.getHand().size() - 1);
-        addCardToDisplay(drawn.getValue());
-
-        //Disable hit if bust
+        addCardToDisplay(gameController.getLastPlayerCard(player));
         hitButton.setEnabled(gameController.playerCanHit(player));
-
     }
 
     //Stay Function
@@ -97,46 +89,29 @@ public class Round1 extends javax.swing.JFrame {
         hitButton.setEnabled(false);
         stayButton.setEnabled(false);
 
-        //AI plays its turn
         gameController.playAITurn();
 
-        //Display any cards AI drew
-        ArrayList<Card> aiHand = gameController.getAI().getHand();
-        for (int i = 2; i < aiHand.size(); i++) {
-            addAICardToDisplay(aiHand.get(i).getValue());
+        //Ask controller for AI extra cards — no direct hand access
+        for (int val : gameController.getAIExtraCards()) {
+            addAICardToDisplay(val);
         }
 
-        //Reveal AI hidden card
         revealAIHiddenCard();
 
-        //Resolve outcome
         gameController.resolveRound();
         GameController.RoundOutcome outcome = gameController.resolveOutcome(player);
         showOutcome(outcome);
     }
+
     
     //Outcome Message
     private void showOutcome(GameController.RoundOutcome outcome) {
-        String message;
-        switch (outcome) {
-            case WIN_WITH_PAC:
-                message = "You win! P.A.C. keycard earned.";
-                break;
-            case PROCEED_NO_PAC:
-                message = "You advance — no keycard.";
-                break;
-            case ELIMINATED:
-                message = "You have been eliminated.";
-                break;
-            case ALL_BUST_PROCEED:
-                message = "Both bust! Everyone advances.";
-                break;
-            default:
-                message = "";
-        }
-        JOptionPane.showMessageDialog(this, message);
+        JOptionPane.showMessageDialog(this, gameController.getOutcomeMessage(outcome));
 
-        //Navigate to Round 2
+        if (outcome == GameController.RoundOutcome.ELIMINATED) {
+            dispose();
+            return;
+        }
         gameController.advanceRound();
         Round2 round2 = new Round2(gameController);
         round2.setVisible(true);
@@ -196,8 +171,9 @@ public class Round1 extends javax.swing.JFrame {
 
     //Reveal AI players hidden card 
     public void revealAIHiddenCard() {
-        int hiddenValue = gameController.getAI().getHand().get(1).getValue();
-        aiCardSlots[aiHiddenCardIndex].setIcon(ResourceLoader.loadCardImage(hiddenValue));
+        aiCardSlots[aiHiddenCardIndex].setIcon(
+            ResourceLoader.loadCardImage(gameController.getAIHiddenCard())
+        );
     }
     
     //Reset all the labels and icons
@@ -417,7 +393,7 @@ public class Round1 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Round1().setVisible(true);
+                new Round1("Player 1").setVisible(true);
             }
         });
     }

@@ -1,8 +1,8 @@
 package escapesequence;
 
 /**
- *
  * @author Akera Griffith & Kaitlyn Morris
+ *  Class for the deck of specialty cards
  */
 
 import java.util.ArrayList;
@@ -10,41 +10,49 @@ import java.util.Collections;
 
 public class SpecialtyDeck {
     private ArrayList<SpecialtyCard> cards;
-    
+
     public SpecialtyDeck(int numPlayers) {
         cards = new ArrayList<>();
         buildDeck(numPlayers);
         shuffle();
     }
-    
-    //Adds sets of 5 until deck size exceeds the number of possible specialty cards
+
+    //1 player = 1 set (5 cards), 2-3 players = 2 sets, 4-6 players = 3 sets
+    private int getSetsForPlayers(int numPlayers) {
+        if (numPlayers == 1)      return 1;
+        else if (numPlayers <= 3) return 2;
+        else                      return 3;
+    }
+
     private void buildDeck(int numPlayers) {
-        int possible = (numPlayers + 1) * 2;
-        int deckSize = 0;
-        
-        while (deckSize <= possible) {
+        int sets = getSetsForPlayers(numPlayers);
+        for (int s = 0; s < sets; s++) {
             for (SpecialtyCard.Type type : SpecialtyCard.Type.values()) {
                 cards.add(new SpecialtyCard(type));
             }
-            deckSize += 5;
         }
     }
-    
-    //Randomizes the order of the specialty deck
+
     public void shuffle() {
-         Collections.shuffle(cards);
+        Collections.shuffle(cards);
     }
-    
-    //Removes and returns the top card or nullif the deck is empty 
+
     public SpecialtyCard drawCard() {
-        if (cards.isEmpty()) {
-            return null;
+        if (cards.isEmpty()) return null;
+        return cards.remove(0);
+    }
+
+    //Deals one specialty card to each alive player and AI
+    public void dealToAll(ArrayList<Player> players, AIPlayer ai) {
+        for (Player p : players) {
+            if (p.isAlive()) {
+                SpecialtyCard card = drawCard();
+                if (card != null) p.recieveSpecialtyCard(card);
+            }
         }
-        return cards .remove(0); 
+        SpecialtyCard aiCard = drawCard();
+        if (aiCard != null) ai.recieveSpecialtyCard(aiCard);
     }
-    
-    public int size () {
-        return cards.size();
-    }
-    
+
+    public int size() { return cards.size(); }
 }

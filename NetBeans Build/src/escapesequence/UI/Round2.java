@@ -23,11 +23,11 @@ public class Round2 extends javax.swing.JFrame {
         setSize(1200,700);
         backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Round2.jpg",1200,700));
         pauseButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Pause.png",40,40));
-        aiCardLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfCard.jpg",40,60));
+        p1Card9.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfCard.jpg",40,60));
         deckLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfCards.jpg",60,40));
         aiSpecialtyCard1.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfSpecialty.jpg",40,40));
         specialtyCardLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Peek.jpg",40,40));
-        p2SpecialtyCardLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfSpecialty.jpg",40,40));
+        p1SpecialtyCardLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfSpecialty.jpg",40,40));
     }
 
     /**
@@ -42,16 +42,34 @@ public class Round2 extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         pauseButton = new javax.swing.JButton();
         deckLabel = new javax.swing.JLabel();
-        aiCardLabel = new javax.swing.JLabel();
-        p2SpecialtyCardLabel = new javax.swing.JLabel();
+        p1Card9 = new javax.swing.JLabel();
+        p1SpecialtyCardLabel = new javax.swing.JLabel();
         aiSpecialtyCard1 = new javax.swing.JLabel();
         specialtyCardTitle = new javax.swing.JLabel();
         specialtyCardLabel = new javax.swing.JLabel();
         p1Label = new javax.swing.JLabel();
-        nextButton = new javax.swing.JButton();
         hitButton = new javax.swing.JButton();
         stayButton = new javax.swing.JButton();
         specialtyButton = new javax.swing.JButton();
+        p1Total = new javax.swing.JLabel();
+        p1Card8 = new javax.swing.JLabel();
+        aiCard7 = new javax.swing.JLabel();
+        aiCard4 = new javax.swing.JLabel();
+        aiCard1 = new javax.swing.JLabel();
+        aiCard5 = new javax.swing.JLabel();
+        aiCard8 = new javax.swing.JLabel();
+        aiCard3 = new javax.swing.JLabel();
+        aiCard6 = new javax.swing.JLabel();
+        aiCard9 = new javax.swing.JLabel();
+        p1Card1 = new javax.swing.JLabel();
+        p1Card2 = new javax.swing.JLabel();
+        p1Card3 = new javax.swing.JLabel();
+        p1Card4 = new javax.swing.JLabel();
+        p1Card5 = new javax.swing.JLabel();
+        p1Card6 = new javax.swing.JLabel();
+        p1Card7 = new javax.swing.JLabel();
+        aiCard2 = new javax.swing.JLabel();
+        aiTotal = new javax.swing.JLabel();
         backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,40 +84,28 @@ public class Round2 extends javax.swing.JFrame {
                 pauseButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 40, 40));
+        jPanel1.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 20, 40, 40));
 
-        deckLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jPanel1.add(deckLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 60, 40));
+        deckLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.add(deckLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 240, 50, 50));
 
-        aiCardLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jPanel1.add(aiCardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 60, 40, 60));
-        jPanel1.add(p2SpecialtyCardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 180, 40, 40));
-        jPanel1.add(aiSpecialtyCard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 40, 40));
+        p1Card9.setText("  ");
+        p1Card9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(p1Card9, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 450, 50, 50));
+        jPanel1.add(p1SpecialtyCardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 320, 40, 40));
+        jPanel1.add(aiSpecialtyCard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, 40, 40));
 
         specialtyCardTitle.setFont(FontLoader.getVT323(12f));
         specialtyCardTitle.setForeground(new java.awt.Color(0, 0, 0));
         specialtyCardTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         specialtyCardTitle.setText("Peek");
         specialtyCardTitle.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(specialtyCardTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 40, 40));
+        jPanel1.add(specialtyCardTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, 40, 40));
         jPanel1.add(specialtyCardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 40, 40));
 
         p1Label.setFont(FontLoader.getVT323(18f));
         p1Label.setForeground(new java.awt.Color(255, 255, 255));
-        p1Label.setText("Kaitlyn");
-        jPanel1.add(p1Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, -1, -1));
-
-        nextButton.setFont(FontLoader.getVT323(18f));
-        nextButton.setBackground(new java.awt.Color(0, 0, 0, 100));
-        nextButton.setForeground(new java.awt.Color(255, 255, 255));
-        nextButton.setContentAreaFilled(false);
-        nextButton.setText("Next >>");
-        nextButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextButtonActionPerformed(evt);
-            }
-        });
-        jPanel1.add(nextButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 260, -1, 30));
+        jPanel1.add(p1Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 510, 160, 30));
 
         hitButton.setFont(FontLoader.getVT323(24f));
         hitButton.setBackground(new java.awt.Color(0, 0, 0, 100));
@@ -107,7 +113,7 @@ public class Round2 extends javax.swing.JFrame {
         hitButton.setContentAreaFilled(false);
         hitButton.setText("Hit");
         hitButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black));
-        jPanel1.add(hitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, 80, 40));
+        jPanel1.add(hitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 560, 180, 80));
 
         stayButton.setFont(FontLoader.getVT323(24f));
         stayButton.setBackground(new java.awt.Color(0, 0, 0, 100));
@@ -115,7 +121,7 @@ public class Round2 extends javax.swing.JFrame {
         stayButton.setContentAreaFilled(false);
         stayButton.setText("Stay");
         stayButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black));
-        jPanel1.add(stayButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 80, 40));
+        jPanel1.add(stayButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 560, 180, 80));
 
         specialtyButton.setFont(FontLoader.getVT323(14f));
         specialtyButton.setBackground(new java.awt.Color(0, 0, 0, 100));
@@ -123,7 +129,70 @@ public class Round2 extends javax.swing.JFrame {
         specialtyButton.setContentAreaFilled(false);
         specialtyButton.setText("Use");
         specialtyButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black));
-        jPanel1.add(specialtyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 60, -1));
+        jPanel1.add(specialtyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 400, 60, -1));
+
+        p1Total.setFont(FontLoader.getVT323(30f));
+        p1Total.setForeground(new java.awt.Color(255, 255, 255));
+        p1Total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        p1Total.setPreferredSize(new java.awt.Dimension(70, 20));
+        jPanel1.add(p1Total, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 520, 40, 30));
+
+        p1Card8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(p1Card8, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 440, 50, 50));
+
+        aiCard7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(aiCard7, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 50, 50));
+
+        aiCard4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(aiCard4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 100, 50, 50));
+
+        aiCard1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(aiCard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 30, 50, 50));
+
+        aiCard5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(aiCard5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 90, 50, 50));
+
+        aiCard8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(aiCard8, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 160, 50, 50));
+
+        aiCard3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(aiCard3, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 30, 50, 50));
+
+        aiCard6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(aiCard6, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 90, 50, 50));
+
+        aiCard9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(aiCard9, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, 50, 50));
+
+        p1Card1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(p1Card1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 50, 50));
+
+        p1Card2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(p1Card2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 310, 50, 50));
+
+        p1Card3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(p1Card3, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 310, 50, 50));
+
+        p1Card4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(p1Card4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 380, 50, 50));
+
+        p1Card5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(p1Card5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 370, 50, 50));
+
+        p1Card6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(p1Card6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 380, 50, 50));
+
+        p1Card7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(p1Card7, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 440, 50, 50));
+
+        aiCard2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(aiCard2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 50, 50));
+
+        aiTotal.setFont(FontLoader.getVT323(30f));
+        aiTotal.setForeground(new java.awt.Color(255, 255, 255));
+        aiTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        aiTotal.setPreferredSize(new java.awt.Dimension(70, 20));
+        jPanel1.add(aiTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 40, 30));
         jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -147,13 +216,6 @@ public class Round2 extends javax.swing.JFrame {
         pause.setVisible(true);
         
     }//GEN-LAST:event_pauseButtonActionPerformed
-
-    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        // TODO add your handling code here:
-        Round3 round3 = new Round3(gameController);
-        round3.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_nextButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,15 +255,33 @@ public class Round2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel aiCardLabel;
+    private javax.swing.JLabel aiCard1;
+    private javax.swing.JLabel aiCard2;
+    private javax.swing.JLabel aiCard3;
+    private javax.swing.JLabel aiCard4;
+    private javax.swing.JLabel aiCard5;
+    private javax.swing.JLabel aiCard6;
+    private javax.swing.JLabel aiCard7;
+    private javax.swing.JLabel aiCard8;
+    private javax.swing.JLabel aiCard9;
     private javax.swing.JLabel aiSpecialtyCard1;
+    private javax.swing.JLabel aiTotal;
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JLabel deckLabel;
     private javax.swing.JButton hitButton;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton nextButton;
+    private javax.swing.JLabel p1Card1;
+    private javax.swing.JLabel p1Card2;
+    private javax.swing.JLabel p1Card3;
+    private javax.swing.JLabel p1Card4;
+    private javax.swing.JLabel p1Card5;
+    private javax.swing.JLabel p1Card6;
+    private javax.swing.JLabel p1Card7;
+    private javax.swing.JLabel p1Card8;
+    private javax.swing.JLabel p1Card9;
     private javax.swing.JLabel p1Label;
-    private javax.swing.JLabel p2SpecialtyCardLabel;
+    private javax.swing.JLabel p1SpecialtyCardLabel;
+    private javax.swing.JLabel p1Total;
     private javax.swing.JButton pauseButton;
     private javax.swing.JButton specialtyButton;
     private javax.swing.JLabel specialtyCardLabel;
