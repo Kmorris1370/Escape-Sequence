@@ -29,13 +29,15 @@ public class Round1 extends javax.swing.JFrame {
     // ── Game Logic ───────────────────────────────────────────
     private GameController gameController;
     private Player player; // current active player
+    private int screenW = 1200, screenH = 700; // set in applyFullScreen()
 
     // ── Single Player Constructor ────────────────────────────
     public Round1(String playerName) {
         initComponents();
         initCardSlots();
         initAICardSlots();
-        setSize(1200, 700);
+        applyFullScreen();
+        SoundManager.enableButtonSounds(this.getContentPane());
         hideAllCardSlots();
         hideSummaryLabels();
         setupUI();
@@ -51,7 +53,8 @@ public class Round1 extends javax.swing.JFrame {
         initComponents();
         initCardSlots();
         initAICardSlots();
-        setSize(1200, 700);
+        applyFullScreen();
+        SoundManager.enableButtonSounds(this.getContentPane());
         hideAllCardSlots();
         hideSummaryLabels();
         setupUI();
@@ -66,12 +69,24 @@ public class Round1 extends javax.swing.JFrame {
         wireButtons();
     }
 
+    // ── Full Screen Helper ───────────────────────────────────
+    private void applyFullScreen() {
+        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        screenW = screen.width;
+        screenH = screen.height;
+        jPanel1.setPreferredSize(screen);
+        jPanel1.setMinimumSize(screen);
+        backgroundLabel.setBounds(0, 0, screenW, screenH);
+        setSize(screenW, screenH);
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+    }
+
     // ── Setup Methods ────────────────────────────────────────
     // Loads all background images and icons
     private void setupUI() {
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Round1.png", 1200, 700));
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Round1.png", screenW, screenH));
         pauseButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Pause.png", 40, 40));
-        deckLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfCard.jpg", 50, 50));
+        deckLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/deck.png", 50, 50));
     }
 
     // Creates single player game — builds player list and GameController
@@ -122,6 +137,7 @@ public class Round1 extends javax.swing.JFrame {
         // Display player's opening card(s)
         for (int val : gameController.getPlayerOpeningCards(player)) {
             addCardToDisplay(val);
+            SoundManager.playDeal();
         }
 
         // Show AI's hidden card face-down
@@ -140,6 +156,7 @@ public class Round1 extends javax.swing.JFrame {
     private void onHit() {
         gameController.playerHit(player);
         addCardToDisplay(gameController.getLastPlayerCard(player));
+        SoundManager.playDeal();
 
         // Disable buttons during timer delay
         hitButton.setEnabled(false);
@@ -154,6 +171,7 @@ public class Round1 extends javax.swing.JFrame {
             if (nextRevealIndex < aiHand.size()) {
                 // Reveal next AI card
                 addAICardToDisplay(aiHand.get(nextRevealIndex).getValue());
+                SoundManager.playDeal();
                 aiCardsRevealed++;
                 updateTotals();
             } else {
@@ -183,6 +201,7 @@ public class Round1 extends javax.swing.JFrame {
             if (nextRevealIndex < aiHand.size()) {
                 javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
                     addAICardToDisplay(aiHand.get(nextRevealIndex).getValue());
+                    SoundManager.playDeal();
                     aiCardsRevealed++;
                     updateTotals();
                     advanceToNextPlayer();
@@ -206,6 +225,7 @@ public class Round1 extends javax.swing.JFrame {
                 timer.addActionListener(e -> {
                     if (cardIndex[0] < aiHand.size()) {
                         addAICardToDisplay(aiHand.get(cardIndex[0]).getValue());
+                        SoundManager.playDeal();
                         cardIndex[0]++;
                         aiCardsRevealed++;
                         updateTotals();
@@ -248,6 +268,7 @@ public class Round1 extends javax.swing.JFrame {
             // Show next player's opening cards
             for (int val : gameController.getPlayerOpeningCards(player)) {
                 addCardToDisplay(val);
+                SoundManager.playDeal();
             }
 
             updateTotals();
@@ -265,31 +286,38 @@ public class Round1 extends javax.swing.JFrame {
     private void revealAndResolve() {
         revealAIHiddenCard();
         aiTotal.setText(String.valueOf(gameController.getAI().getHandTotal()));
-        GameController.RoundOutcome outcome = gameController.resolveOutcome(player);
         gameController.resolveRound();
+        GameController.RoundOutcome outcome = gameController.resolveOutcome(player);
         showOutcome(outcome);
     }
 
     // Shows outcome dialog then navigates to Round 2
     private void showOutcome(GameController.RoundOutcome outcome) {
         SwingUtilities.invokeLater(() -> {
-            GameDialog.show(this, gameController.getOutcomeMessage(outcome));
+            SoundManager.playOutcome(outcome != GameController.RoundOutcome.ELIMINATED);
+            GameDialog.show(this, gameController.getRoundSummaryMessage(outcome));
+
+            // Tiebreaker — launch modal dialog; execution continues after it closes
+            ArrayList<Player> tied = gameController.getTiedPlayers();
+            if (!tied.isEmpty() && gameController.canAwardMoreKeycards()) {
+                new TiebreakerRound(this, gameController, tied).setVisible(true);
+            }
+
+            // 2nd keycard bonus — let each player choose Shield or gift
+            handleKeycardBonus();
 
             boolean allDead = true;
             for (Player p : gameController.getPlayers()) {
-                if (p.isAlive()) {
-                    allDead = false;
-                    break;
-                }
+                if (p.isAlive()) { allDead = false; break; }
             }
 
             if (allDead) {
+                GameDialog.show(this, "All players have been eliminated!");
                 new GameOver(gameController).setVisible(true);
                 dispose();
                 return;
             }
 
-            // Single player eliminated
             if (outcome == GameController.RoundOutcome.ELIMINATED && !isMultiplayer) {
                 new GameOver(gameController).setVisible(true);
                 dispose();
@@ -297,9 +325,47 @@ public class Round1 extends javax.swing.JFrame {
             }
 
             gameController.advanceRound();
-            new Round2(gameController).setVisible(true); // Round3 for Round2's version
+            new Round2(gameController).setVisible(true);
             dispose();
         });
+    }
+
+    // Prompts each player who earned their 2nd keycard to convert it to Wild or gift it
+    private void handleKeycardBonus() {
+        for (Player p : gameController.getKeycardBonusPlayers()) {
+            if (gameController.isMultiplayer()) {
+                // Multiplayer: gift only
+                java.util.ArrayList<String> giftChoices = new java.util.ArrayList<>();
+                for (Player other : gameController.getPlayers()) {
+                    if (other != p && other.isAlive() && !other.hasKeycard()) {
+                        giftChoices.add("Gift to " + other.getName());
+                    }
+                }
+                if (giftChoices.isEmpty()) {
+                    // No valid gift targets — nothing special happens
+                    p.clearPendingKeycardBonus();
+                    continue;
+                }
+                String[] options = giftChoices.toArray(new String[0]);
+                String choice = GameDialog.showChoice(this,
+                    p.getName() + " earned a 2nd keycard!\nGift it to:", options);
+                if (choice != null && choice.startsWith("Gift to ")) {
+                    String recipientName = choice.substring("Gift to ".length());
+                    for (Player recipient : gameController.getPlayers()) {
+                        if (recipient.getName().equals(recipientName)) {
+                            p.transferKeycardTo(recipient);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                // Single player: convert 2nd keycard to Wild card
+                p.removeOneKeycard();
+                p.setHasWildCard(true);
+                GameDialog.show(this, p.getName() + " earned a Wild card! Saved for Round 3.");
+            }
+            p.clearPendingKeycardBonus();
+        }
     }
 
     // ── Card Slot Initialization ─────────────────────────────
@@ -333,7 +399,7 @@ public class Round1 extends javax.swing.JFrame {
     private void dealAIOpeningCards() {
         aiHiddenCardIndex = 0;
         aiCardSlots[0].setVisible(true);
-        aiCardSlots[0].setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackOfCard.jpg", 50, 50));
+        aiCardSlots[0].setIcon(ResourceLoader.loadImageScaled("/assets/pictures/deck.png", 50, 50));
         aiIndex = 1; // next AI card goes to slot 1
     }
 
@@ -350,6 +416,7 @@ public class Round1 extends javax.swing.JFrame {
     private void revealAIHiddenCard() {
         aiCardSlots[aiHiddenCardIndex].setIcon(
                 ResourceLoader.loadCardImage(gameController.getAIHiddenCard()));
+        SoundManager.playDeal();
     }
 
     // Resets all card slots — clears icons and hides labels
@@ -508,7 +575,7 @@ public class Round1 extends javax.swing.JFrame {
         });
         jPanel1.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 20, 40, 40));
 
-        aiCard1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        aiCard1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         aiCard1.setOpaque(true);
         jPanel1.add(aiCard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 50, 50));
 
@@ -650,7 +717,7 @@ public class Round1 extends javax.swing.JFrame {
 
         p1Total.setForeground(new java.awt.Color(255, 255, 255));
         p1Total.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        p1Total.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        p1Total.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         p1Total.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 p1TotalActionPerformed(evt);
@@ -697,7 +764,7 @@ public class Round1 extends javax.swing.JFrame {
         p6Total.setForeground(new java.awt.Color(255, 255, 255));
         p6Total.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPanel1.add(p6Total, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 320, 50, 40));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

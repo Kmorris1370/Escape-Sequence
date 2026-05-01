@@ -28,6 +28,7 @@ public class SpecialtyDeck {
         int sets = getSetsForPlayers(numPlayers);
         for (int s = 0; s < sets; s++) {
             for (SpecialtyCard.Type type : SpecialtyCard.Type.values()) {
+                if (type == SpecialtyCard.Type.WILD) continue; // WILD is earned, not dealt
                 cards.add(new SpecialtyCard(type));
             }
         }
@@ -47,11 +48,11 @@ public class SpecialtyDeck {
         for (Player p : players) {
             if (p.isAlive()) {
                 SpecialtyCard card = drawCard();
-                if (card != null) p.recieveSpecialtyCard(card);
+                if (card != null) p.receiveSpecialtyCard(card);
             }
         }
         SpecialtyCard aiCard = drawCard();
-        if (aiCard != null) ai.recieveSpecialtyCard(aiCard);
+        if (aiCard != null) ai.receiveSpecialtyCard(aiCard);
     }
 
     public int size() { return cards.size(); }

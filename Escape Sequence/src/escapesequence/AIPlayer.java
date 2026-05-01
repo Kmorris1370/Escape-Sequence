@@ -35,9 +35,9 @@ public class AIPlayer extends Player {
         }
     }
 
-    //AI uses specialty cards in rounds 2 and 3 only
+    // AI holds specialty cards until Round 3 only
     public boolean shouldUseSpecialtyCard() {
-        return round >= 2 && hasSpecialtyCards();
+        return round == 3 && hasSpecialtyCards();
     }
 
     //Full turn: handles frozen state, specialty cards, and hit/stand
@@ -56,7 +56,7 @@ public class AIPlayer extends Player {
             int drawnValue = deck.drawCard();
             if (drawnValue == -1) break;
 
-            recieveCard(new Card(drawnValue, false));
+            receiveCard(new Card(drawnValue, false));
 
             //Post-draw: SHIELD or REVERSE if busting
             if (shouldUseSpecialtyCard()) {
@@ -113,7 +113,7 @@ public class AIPlayer extends Player {
     //Draws a card and subtracts its value
     private void applyReverse(Deck deck) {
         int val = deck.drawCard();
-        if (val != -1) recieveCard(new Card(-val, false));
+        if (val != -1) receiveCard(new Card(-val, false));
     }
 
     //Peeks at next card — if it would bust, AI stands naturally

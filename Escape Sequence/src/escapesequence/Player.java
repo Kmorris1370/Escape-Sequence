@@ -16,6 +16,7 @@ public class Player {
     private boolean isFrozen;
     private boolean hasWildCard;
     private int keycardCount;
+    private boolean pendingKeycardBonus;
 
     public Player(String name) {
         this.name = name;
@@ -26,6 +27,7 @@ public class Player {
         this.isFrozen = false;
         this.hasWildCard = false;
         this.keycardCount = 0;
+        this.pendingKeycardBonus = false;
     }
 
     public String getName()                    { return name; }
@@ -44,14 +46,30 @@ public class Player {
 
     public boolean isBust()                    { return getHandTotal() > 21; }
 
-    //Awards keycard, tracks count, auto-awards Wild on 2nd keycard
+    public boolean isPendingKeycardBonus()       { return pendingKeycardBonus; }
+    public void clearPendingKeycardBonus()       { pendingKeycardBonus = false; }
+
+    // Awards keycard; flags bonus choice when 2nd keycard is earned
     public void awardKeycard() {
         hasKeycard = true;
         keycardCount++;
-        if (keycardCount == 2) hasWildCard = true;
+        if (keycardCount == 2) pendingKeycardBonus = true;
     }
 
-    public void recieveCard(Card card)         { hand.add(card); }
+    // Removes one keycard (used when converting 2nd keycard to Shield)
+    public void removeOneKeycard() {
+        if (keycardCount > 0) keycardCount--;
+        if (keycardCount == 0) hasKeycard = false;
+    }
+
+    // Transfers one keycard to recipient without triggering their bonus logic
+    public void transferKeycardTo(Player recipient) {
+        removeOneKeycard();
+        recipient.keycardCount++;
+        recipient.hasKeycard = true;
+    }
+
+    public void receiveCard(Card card)          { hand.add(card); }
 
     public int getHandTotal() {
         int total = 0;
@@ -61,7 +79,7 @@ public class Player {
 
     public void clearHand()                    { hand.clear(); }
 
-    public void recieveSpecialtyCard(SpecialtyCard card) {
+    public void receiveSpecialtyCard(SpecialtyCard card) {
         specialtyCards.add(card);
     }
 

@@ -3,7 +3,6 @@ package escapesequence.UI;
 /**
  * @author Akera Griffith & Kaitlyn Morris
  * Reusable themed dialog utility for all in-game messages
- * All dialogs are undecorated (no title bar) and styled to match the game theme
  */
 
 import java.awt.*;
@@ -76,7 +75,7 @@ public class GameDialog {
         dialog.setUndecorated(true);
 
         JLabel msg = buildMessageLabel(message, 28f);
-        msg.setHorizontalAlignment(SwingConstants.LEFT); // left-align for multi-line messages
+        msg.setHorizontalAlignment(SwingConstants.CENTER); // center-align all dialog text
 
         JButton ok = buildButton("OK");
         ok.addActionListener(e -> dialog.dispose());
@@ -93,6 +92,95 @@ public class GameDialog {
         showDialog(dialog, panel, parent);
     }
 
+    // ── Input Dialog ─────────────────────────────────────────
+
+    // Shows a styled text-field dialog. Returns the entered string, or null if cancelled.
+    // Example: String val = GameDialog.showInput(this, "Choose a value from 1 to 9 for Wild.");
+    public static String showInput(Frame parent, String prompt) {
+        final String[] result = {null};
+
+        JDialog dialog = new JDialog(parent, true);
+        dialog.setUndecorated(true);
+
+        JLabel msg = buildMessageLabel(prompt, 24f);
+
+        JTextField field = new JTextField(10);
+        field.setFont(FontLoader.getVT323(24f));
+        field.setForeground(new Color(198, 40, 40));
+        field.setBackground(new Color(10, 10, 15));
+        field.setCaretColor(new Color(198, 40, 40));
+        field.setBorder(BorderFactory.createLineBorder(new Color(198, 40, 40)));
+        field.setHorizontalAlignment(JTextField.CENTER);
+        field.addActionListener(e -> { result[0] = field.getText(); dialog.dispose(); }); // Enter key
+
+        JPanel fieldPanel = new JPanel();
+        fieldPanel.setBackground(new Color(10, 10, 15));
+        fieldPanel.setBorder(BorderFactory.createEmptyBorder(0, 30, 10, 30));
+        fieldPanel.add(field);
+
+        JButton ok = buildButton("OK");
+        ok.addActionListener(e -> { result[0] = field.getText(); dialog.dispose(); });
+
+        JButton cancel = buildButton("Cancel");
+        cancel.addActionListener(e -> dialog.dispose());
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        buttonPanel.setBackground(new Color(10, 10, 15));
+        buttonPanel.add(ok);
+        buttonPanel.add(cancel);
+
+        JPanel panel = buildPanel();
+        panel.add(msg, BorderLayout.NORTH);
+        panel.add(fieldPanel, BorderLayout.CENTER);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        showDialog(dialog, panel, parent);
+        return result[0];
+    }
+
+    // ── Choice Dialog ─────────────────────────────────────────
+
+    // Shows a styled dropdown dialog. Returns the selected option, or null if cancelled.
+    // Example: String pick = GameDialog.showChoice(this, "Choose a target to freeze:", names);
+    public static String showChoice(Frame parent, String prompt, String[] options) {
+        final String[] result = {null};
+
+        JDialog dialog = new JDialog(parent, true);
+        dialog.setUndecorated(true);
+
+        JLabel msg = buildMessageLabel(prompt, 24f);
+
+        JComboBox<String> combo = new JComboBox<>(options);
+        combo.setFont(FontLoader.getVT323(22f));
+        combo.setForeground(new Color(198, 40, 40));
+        combo.setBackground(new Color(10, 10, 15));
+        combo.setFocusable(false); // remove focus highlight on selection
+
+        JPanel comboPanel = new JPanel();
+        comboPanel.setBackground(new Color(10, 10, 15));
+        comboPanel.setBorder(BorderFactory.createEmptyBorder(0, 30, 10, 30));
+        comboPanel.add(combo);
+
+        JButton ok = buildButton("OK");
+        ok.addActionListener(e -> { result[0] = (String) combo.getSelectedItem(); dialog.dispose(); });
+
+        JButton cancel = buildButton("Cancel");
+        cancel.addActionListener(e -> dialog.dispose());
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        buttonPanel.setBackground(new Color(10, 10, 15));
+        buttonPanel.add(ok);
+        buttonPanel.add(cancel);
+
+        JPanel panel = buildPanel();
+        panel.add(msg, BorderLayout.NORTH);
+        panel.add(comboPanel, BorderLayout.CENTER);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        showDialog(dialog, panel, parent);
+        return result[0];
+    }
+
     // ── Shared Helpers ───────────────────────────────────────
 
     // Builds a styled message label with the game's font and color
@@ -105,7 +193,7 @@ public class GameDialog {
         return label;
     }
 
-    // Builds a styled button with the game's font and border
+    // Builds a styled button with the game's font and a wider uniform border
     private static JButton buildButton(String text) {
         JButton btn = new JButton(text);
         btn.setFont(FontLoader.getVT323(24f));
@@ -113,7 +201,10 @@ public class GameDialog {
         btn.setBackground(new Color(10, 10, 15));
         btn.setContentAreaFilled(false);
         btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createLineBorder(new Color(198, 40, 40)));
+        btn.setPreferredSize(new java.awt.Dimension(100, 36));
+        btn.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(198, 40, 40), 2),
+            BorderFactory.createEmptyBorder(4, 14, 4, 14)));
         return btn;
     }
 

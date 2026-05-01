@@ -14,12 +14,19 @@ public class MainMenu extends javax.swing.JFrame {
      */
     public MainMenu() {
         initComponents();
-        setSize(1200,700);
-        
-        //Set Images
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/TitleScreen.png",1200,700));
-        tutorialButton.setIcon(ResourceLoader.loadImageFitted("/assets/pictures/TextIcon.png", 40, 40));
-        settingsButton.setIcon(ResourceLoader.loadImageFitted("/assets/pictures/Settings.png", 40, 40));
+        setMaximumSize(null);  
+        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int sw = screen.width, sh = screen.height;
+        jPanel1.setPreferredSize(screen);
+        jPanel1.setMinimumSize(screen);
+        backgroundLabel.setBounds(0, 0, sw, sh);
+        setSize(sw, sh);
+        SoundManager.enableButtonSounds(this.getContentPane());
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/TitleScreen.png", sw, sh));
+        javax.swing.SwingUtilities.invokeLater(() -> backgroundLabel.setBounds(0, 0, sw, sh));
+        tutorialButton.setIcon(ResourceLoader.loadImageFitted("/assets/pictures/tutorial.png", 60, 60));
+        settingsButton.setIcon(ResourceLoader.loadImageFitted("/assets/pictures/Settings.png", 50, 50));
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -56,7 +63,7 @@ public class MainMenu extends javax.swing.JFrame {
         tutorialLabel.setForeground(new java.awt.Color(255, 255, 255));
         tutorialLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tutorialLabel.setText("Settings");
-        jPanel1.add(tutorialLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 70, 80, 20));
+        jPanel1.add(tutorialLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 70, 90, 20));
 
         titleLabel.setFont(FontLoader.getVT323(70f));
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -89,7 +96,7 @@ public class MainMenu extends javax.swing.JFrame {
                 settingsButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(settingsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 20, 40, 40));
+        jPanel1.add(settingsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, 50, 50));
 
         singlePlayerButton.setFont(FontLoader.getVT323(40f));
         singlePlayerButton.setContentAreaFilled(false);
@@ -127,14 +134,14 @@ public class MainMenu extends javax.swing.JFrame {
                 tutorialButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(tutorialButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 40, 40));
+        jPanel1.add(tutorialButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 60, 60));
 
         tutorialLabel1.setFont(FontLoader.getVT323(18f));
         tutorialLabel1.setForeground(new java.awt.Color(255, 255, 255));
         tutorialLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tutorialLabel1.setText("Tutorial");
-        jPanel1.add(tutorialLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 70, 20));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
+        jPanel1.add(tutorialLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 80, 20));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

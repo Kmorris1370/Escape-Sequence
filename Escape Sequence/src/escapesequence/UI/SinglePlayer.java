@@ -10,11 +10,16 @@ public class SinglePlayer extends javax.swing.JFrame {
 
     public SinglePlayer() {
         initComponents();
-        setSize(1200,700);
-        
-        //Set Images
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/WarningScreens.png",1200,700));
-        backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",40,40));
+        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int sw = screen.width, sh = screen.height;
+        jPanel1.setPreferredSize(screen);
+        jPanel1.setMinimumSize(screen);
+        backgroundLabel.setBounds(0, 0, sw, sh);
+        setSize(sw, sh);
+        SoundManager.enableButtonSounds(this.getContentPane());
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/WarningScreens.png", sw, sh));
+        backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png", 50, 50));
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -72,7 +77,7 @@ public class SinglePlayer extends javax.swing.JFrame {
                 backButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 40, 40));
+        jPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 50));
 
         startButton.setFont(FontLoader.getVT323(40f));
         startButton.setBackground(new java.awt.Color(0, 0, 0, 0));
@@ -87,7 +92,7 @@ public class SinglePlayer extends javax.swing.JFrame {
             }
         });
         jPanel1.add(startButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 500, 240, 90));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,7 +109,8 @@ public class SinglePlayer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nameInputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameInputFieldActionPerformed
-        // TODO add your handling code here:
+        // Enter key pressed — same as clicking Start
+        startButtonActionPerformed(evt);
     }//GEN-LAST:event_nameInputFieldActionPerformed
 
     //Back Arrow

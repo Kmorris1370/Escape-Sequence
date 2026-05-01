@@ -49,4 +49,13 @@ public class Deck {
         if (cards.isEmpty()) return -1;
         return cards.get(0); //Looks at the card w/o removing it
     }
+
+    // Moves the top card to a random position deeper in the deck
+    // Called after Peek if the player chooses not to hit
+    public void shuffleTopCard() {
+        if (cards.size() <= 1) return;
+        int card = cards.remove(0);
+        int randomPos = 1 + (int) (Math.random() * cards.size());
+        cards.add(randomPos, card);
+    }
 }

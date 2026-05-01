@@ -37,9 +37,15 @@ public class ResourceLoader {
         return new Font("Arial", Font.PLAIN, (int) size);
     }
     
-    //Method to get the image url or the cards
+    // Loads a card image; negative values (from Reverse) use their absolute value
+    // overlaid with a minus indicator by loading the base image
     public static ImageIcon loadCardImage(int value) {
-        return loadImageScaled("/assets/pictures/" + value + ".jpg", 50, 50);
+        int absValue = Math.abs(value);
+        if (absValue < 1 || absValue > 9) {
+            System.err.println("[ResourceLoader] Invalid card value: " + value);
+            return new ImageIcon();
+        }
+        return loadImageScaled("/assets/pictures/" + absValue + ".jpg", 50, 50);
     }
 
     // For backgrounds — stretches to fill exactly
@@ -48,34 +54,34 @@ public class ResourceLoader {
             java.net.URL imgURL = ResourceLoader.class.getResource(path);
             if (imgURL == null) {
                 System.err.println("[ResourceLoader] FAILED — image not found at: " + path);
-                return null;
+                return new ImageIcon();
             }
             ImageIcon icon = new ImageIcon(imgURL);
             if (icon.getIconWidth() == -1) {
                 System.err.println("[ResourceLoader] FAILED — image could not be read: " + path);
-                return null;
+                return new ImageIcon();
             }
             Image scaled = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             return new ImageIcon(scaled);
         } catch (Exception e) {
             System.err.println("[ResourceLoader] EXCEPTION loading: " + path);
             e.printStackTrace();
-            return null;
+            return new ImageIcon();
         }
     }
 
-// For cards and icons — maintains aspect ratio
+    // For cards and icons — maintains aspect ratio
     public static ImageIcon loadImageFitted(String path, int maxWidth, int maxHeight) {
         try {
             java.net.URL imgURL = ResourceLoader.class.getResource(path);
             if (imgURL == null) {
                 System.err.println("[ResourceLoader] FAILED — image not found at: " + path);
-                return null;
+                return new ImageIcon();
             }
             ImageIcon icon = new ImageIcon(imgURL);
             if (icon.getIconWidth() == -1) {
                 System.err.println("[ResourceLoader] FAILED — image could not be read: " + path);
-                return null;
+                return new ImageIcon();
             }
             int origWidth = icon.getIconWidth();
             int origHeight = icon.getIconHeight();
@@ -87,7 +93,7 @@ public class ResourceLoader {
         } catch (Exception e) {
             System.err.println("[ResourceLoader] EXCEPTION loading: " + path);
             e.printStackTrace();
-            return null;
+            return new ImageIcon();
         }
     }
 }

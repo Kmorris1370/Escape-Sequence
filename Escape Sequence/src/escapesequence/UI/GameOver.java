@@ -3,23 +3,28 @@ package escapesequence.UI;
 
 import escapesequence.GameController;
 import java.util.ArrayList;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
- *
- * @author kmorr
+ * @author Akera Griffith & Kaitlyn Morris
+ * All players are dead game over screen
  */
 public class GameOver extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GameOver
-     */
-    
     private GameController gameController;
     
     public GameOver(GameController gameController) {
+        this.gameController = gameController;
         initComponents();
-        setSize(1200,700);
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/SystemFailure.jpg",1200,700));
+        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int sw = screen.width, sh = screen.height;
+        jPanel1.setPreferredSize(screen);
+        backgroundLabel.setBounds(0, 0, sw, sh);
+        setSize(sw, sh);
+        SoundManager.enableButtonSounds(this.getContentPane());
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/GameOver.png", sw, sh));
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -33,6 +38,7 @@ public class GameOver extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         mainMenu = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -44,6 +50,7 @@ public class GameOver extends javax.swing.JFrame {
         mainMenu.setForeground(new java.awt.Color(198, 40, 40));
         mainMenu.setText("Main Menu");
         mainMenu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        mainMenu.setFocusPainted(false);
         mainMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mainMenuActionPerformed(evt);
@@ -51,9 +58,11 @@ public class GameOver extends javax.swing.JFrame {
         });
         jPanel1.add(mainMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 450, 240, 100));
 
-        backgroundLabel.setMaximumSize(new java.awt.Dimension(1200, 700));
-        backgroundLabel.setMinimumSize(new java.awt.Dimension(1200, 700));
-        backgroundLabel.setPreferredSize(new java.awt.Dimension(1200, 700));
+        jLabel1.setFont(new java.awt.Font("VT323", 0, 170)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Everyone is Dead");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 36, 1200, 390));
         jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -73,6 +82,7 @@ public class GameOver extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
 
     private void mainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuActionPerformed
         // TODO add your handling code here:
@@ -120,6 +130,7 @@ public class GameOver extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backgroundLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton mainMenu;
     // End of variables declaration//GEN-END:variables

@@ -5,7 +5,6 @@ package escapesequence.UI;
  * Escape Sequence Multiplayer Interface
  */
 
-import javax.swing.JOptionPane;
 
 public class Multiplayer extends javax.swing.JFrame {
 
@@ -16,9 +15,15 @@ public class Multiplayer extends javax.swing.JFrame {
     
     public Multiplayer() {
         initComponents();
-        setSize(1200,700);
+        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int sw = screen.width, sh = screen.height;
+        jPanel1.setPreferredSize(screen);
+        jPanel1.setMinimumSize(screen);
+        backgroundLabel.setBounds(0, 0, sw, sh);
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        SoundManager.enableButtonSounds(this.getContentPane());
         //hideAllCadetFields();
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/WarningScreens.png",1200,700));
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/WarningScreens.png", sw, sh));
         arrowButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",40,40));
         
         updateVisibleFields(selectedPlayerCount);
@@ -122,6 +127,7 @@ public class Multiplayer extends javax.swing.JFrame {
 
         arrowButton.setContentAreaFilled(false);
         arrowButton.setBorder(null);
+        arrowButton.setFocusPainted(false);
         arrowButton.setBackground(new java.awt.Color(0, 0, 0, 0));
         arrowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -299,7 +305,7 @@ public class Multiplayer extends javax.swing.JFrame {
         playersTotal.setFont(new java.awt.Font("VT323", 0, 48)); // NOI18N
         playersTotal.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.add(playersTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 40, 50));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

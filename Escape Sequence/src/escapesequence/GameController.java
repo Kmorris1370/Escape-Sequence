@@ -17,6 +17,7 @@ public class GameController {
     private int currentRound;
     private int pacCount;
     private GameMode gameMode;
+    private boolean peekPending = false; // true after Peek used, cleared on hit or stay
 
     private static final int MAX_PACS = 3;
 
@@ -65,18 +66,23 @@ public class GameController {
         // Deal one opening card to each alive player
         for (Player p : players) {
             if (p.isAlive()) {
-                p.recieveCard(new Card(deck.drawCard(), true));
+                p.receiveCard(new Card(deck.drawCard(), true));
                 System.out.println(p.getName() + " opening hand: " + p.getHandTotal());
             }
         }
 
         // Deal AI's one hidden card
-        ai.recieveCard(new Card(deck.drawCard(), false));
+        ai.receiveCard(new Card(deck.drawCard(), false));
         System.out.println("AI opening card (hidden): " + ai.getHand().get(0).getValue());
 
-        // Deal specialty cards starting round 2
+        // Deal specialty cards starting round 2; AI gets 2 cards in round 3
         if (currentRound >= 2) {
             specialtyDeck.dealToAll(players, ai);
+        }
+        if (currentRound == 3) {
+            // Deal a second specialty card to the AI
+            SpecialtyCard extra = specialtyDeck.drawCard();
+            if (extra != null) ai.receiveSpecialtyCard(extra);
         }
     }
 
@@ -119,8 +125,9 @@ public class GameController {
                 System.err.println("Deck empty — cannot deal card");
                 return;
             }
-            p.recieveCard(new Card(val, true));
-            System.out.println(p.getName() + " hit — new total: " + p.getHandTotal());
+            p.receiveCard(new Card(val, true));
+            peekPending = false; // player drew a card — peeked card is now gone
+            System.out.println(p.getName() + " hit -> new total: " + p.getHandTotal());
         }
     }
 
@@ -145,7 +152,7 @@ public class GameController {
     // REVERSE — draws a card and subtracts its value instead of adding
     public void applyReverse(Player p) {
         int val = deck.drawCard();
-        if (val != -1) p.recieveCard(new Card(-val, true));
+        if (val != -1) p.receiveCard(new Card(-val, true));
     }
 
     // FREEZE — prevents target from hitting on their next turn
@@ -156,7 +163,7 @@ public class GameController {
     // WILD — lets player choose the value of their next card
     public void applyWild(Player p, int chosenValue) {
         if (chosenValue >= 1 && chosenValue <= 9 && p.hasWildCard()) {
-            p.recieveCard(new Card(chosenValue, true));
+            p.receiveCard(new Card(chosenValue, true));
             p.setHasWildCard(false);
         }
     }
@@ -165,7 +172,8 @@ public class GameController {
     public void applySwap(Player p, int playerCardIndex, int aiCardIndex) {
         ArrayList<Card> pHand = p.getHand();
         ArrayList<Card> aiHand = ai.getHand();
-        if (playerCardIndex < pHand.size() && aiCardIndex < aiHand.size()) {
+        if (playerCardIndex >= 0 && aiCardIndex >= 0
+                && playerCardIndex < pHand.size() && aiCardIndex < aiHand.size()) {
             if (aiHand.get(aiCardIndex).isFaceUp()) {
                 Card temp = pHand.get(playerCardIndex);
                 pHand.set(playerCardIndex, aiHand.get(aiCardIndex));
@@ -175,32 +183,90 @@ public class GameController {
     }
 
     // PEEK — returns the next card in the deck without drawing it
+    // Sets peekPending so the card is shuffled away if the player stays instead of hitting
     public int applyPeek() {
+        peekPending = true;
         return deck.peekCard();
+    }
+
+    // Called at the start of onStay — shuffles top card to random position if a peek is pending
+    public void resolvePeekShuffle() {
+        if (peekPending) {
+            deck.shuffleTopCard();
+            peekPending = false;
+        }
     }
 
     // ── Outcome Resolution ───────────────────────────────────
 
-    // Determines a player's outcome based on their total vs AI total
+    // Determines a player's outcome — only the sole best player earns a keycard;
+    // tied players get PROCEED_NO_PAC and are resolved via TiebreakerRound
     public RoundOutcome resolveOutcome(Player p) {
-        System.out.println("--- RESOLVING OUTCOME ---");
-        System.out.println(p.getName() + " total: " + p.getHandTotal());
-        System.out.println("AI total: " + ai.getHandTotal());
-        System.out.println("Player bust: " + p.isBust());
-        System.out.println("AI bust: " + ai.isBust());
-
         boolean playerBust = p.isBust();
-        boolean aiBust = ai.isBust();
+        boolean aiBust     = ai.isBust();
 
         if (playerBust && aiBust)  return RoundOutcome.ALL_BUST_PROCEED;
         if (playerBust && !aiBust) return RoundOutcome.ELIMINATED;
 
-        // Neither bust — whoever is closest to 21 wins
-        if (p.getHandTotal() >= ai.getHandTotal()) {
+        // Player is not bust — check whether they beat or match the AI
+        boolean playerBeatsAI = aiBust || p.getHandTotal() >= ai.getHandTotal();
+        if (!playerBeatsAI) return RoundOutcome.PROCEED_NO_PAC;
+
+        // Player qualifies — only award keycard if they are the sole best player
+        int best = getBestPlayerTotal();
+        if (p.getHandTotal() == best && getTiedPlayers().isEmpty()) {
             return (pacCount < MAX_PACS) ? RoundOutcome.WIN_WITH_PAC : RoundOutcome.PROCEED_NO_PAC;
         }
-        return RoundOutcome.PROCEED_NO_PAC;
+        return RoundOutcome.PROCEED_NO_PAC; // tied players handled by TiebreakerRound
     }
+
+    // Returns the highest hand total among alive, non-busted players who beat (or tied) the AI
+    private int getBestPlayerTotal() {
+        int best = -1;
+        for (Player p : players) {
+            if (p.isAlive() && !p.isBust()) {
+                if (ai.isBust() || p.getHandTotal() >= ai.getHandTotal()) {
+                    best = Math.max(best, p.getHandTotal());
+                }
+            }
+        }
+        return best;
+    }
+
+    // Returns players who are tied for the best total; empty list if no tie
+    public ArrayList<Player> getTiedPlayers() {
+        int best = getBestPlayerTotal();
+        if (best < 0) return new ArrayList<>();
+        ArrayList<Player> tied = new ArrayList<>();
+        for (Player p : players) {
+            if (p.isAlive() && !p.isBust()) {
+                if (ai.isBust() || p.getHandTotal() >= ai.getHandTotal()) {
+                    if (p.getHandTotal() == best) tied.add(p);
+                }
+            }
+        }
+        return tied.size() > 1 ? tied : new ArrayList<>();
+    }
+
+    // Awards a keycard to the tiebreaker winner — called by TiebreakerRound
+    public void awardTiebreakerKeycard(Player winner) {
+        if (pacCount < MAX_PACS) {
+            winner.awardKeycard();
+            pacCount++;
+        }
+    }
+
+    // Returns players who earned their 2nd keycard and need to choose Shield or gift
+    public ArrayList<Player> getKeycardBonusPlayers() {
+        ArrayList<Player> result = new ArrayList<>();
+        for (Player p : players) {
+            if (p.isPendingKeycardBonus()) result.add(p);
+        }
+        return result;
+    }
+
+    // Returns true if another keycard can still be awarded this game
+    public boolean canAwardMoreKeycards() { return pacCount < MAX_PACS; }
 
     // Applies the outcome — awards keycard, eliminates player, or does nothing
     private void applyOutcome(Player p, RoundOutcome outcome) {
@@ -260,6 +326,90 @@ public class GameController {
         return sb.toString();
     }
 
+    public String getRoundSummaryMessage(RoundOutcome outcome) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== END OF ROUND ").append(currentRound).append(" ===\n\n");
+
+        if (!isMultiplayer()) {
+            sb.append("Result: ").append(getOutcomeMessage(outcome)).append("\n");
+            Player p = players.get(0);
+            sb.append(p.getName()).append(" total: ").append(p.getHandTotal());
+            if (p.isBust()) sb.append(" (bust)");
+            sb.append("\n");
+            sb.append("P.A.C. keycards: ").append(p.getKeycardCount()).append("\n");
+            sb.append("Status: ").append(p.isAlive() ? "Alive" : "Eliminated").append("\n");
+        } else {
+            for (Player p : players) {
+                sb.append(p.getName()).append(" — Total: ").append(p.getHandTotal());
+                if (p.isBust()) sb.append(" (bust)");
+                sb.append(" | Keycards: ").append(p.getKeycardCount());
+                sb.append(" | Status: ").append(p.isAlive() ? "Alive" : "Eliminated");
+                sb.append("\n");
+            }
+        }
+
+        sb.append("\nThe System total: ").append(ai.getHandTotal());
+        if (ai.isBust()) sb.append(" (bust)");
+        sb.append("\nTotal P.A.C.s awarded so far: ").append(pacCount).append("/").append(MAX_PACS);
+
+        return sb.toString();
+    }
+
+    public String getFinalSummaryMessage() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== FINAL RESULTS ===\n\n");
+
+        int highestKeycards = -1;
+        ArrayList<Player> winners = new ArrayList<>();
+
+        for (Player p : players) {
+            sb.append(p.getName())
+              .append(" — Keycards: ").append(p.getKeycardCount())
+              .append(" | Final Status: ").append(p.isAlive() ? "Alive" : "Eliminated");
+
+            if (p.isAlive() && p.hasKeycard()) {
+                sb.append(" | Escaped");
+            } else if (p.isAlive()) {
+                sb.append(" | Left Behind");
+            }
+            sb.append("\n");
+
+            if (p.getKeycardCount() > highestKeycards) {
+                highestKeycards = p.getKeycardCount();
+                winners.clear();
+                winners.add(p);
+            } else if (p.getKeycardCount() == highestKeycards) {
+                winners.add(p);
+            }
+        }
+
+        sb.append("\n");
+        ArrayList<Player> survivors = getSurvivors();
+        if (survivors.isEmpty()) {
+            sb.append("No player escaped.\n");
+        } else {
+            sb.append("Escaped: ");
+            for (int i = 0; i < survivors.size(); i++) {
+                if (i > 0) sb.append(i == survivors.size() - 1 ? " and " : ", ");
+                sb.append(survivors.get(i).getName());
+            }
+            sb.append("\n");
+        }
+
+        if (!winners.isEmpty() && highestKeycards > 0) {
+            sb.append(winners.size() == 1 ? "Ultimate winner: " : "Ultimate winners: ");
+            for (int i = 0; i < winners.size(); i++) {
+                if (i > 0) sb.append(i == winners.size() - 1 ? " and " : ", ");
+                sb.append(winners.get(i).getName());
+            }
+            sb.append(" with ").append(highestKeycards).append(highestKeycards == 1 ? " keycard." : " keycards.");
+        } else {
+            sb.append("No ultimate winner — nobody earned a keycard.");
+        }
+
+        return sb.toString();
+    }
+
     // ── End Game ─────────────────────────────────────────────
 
     // Returns list of players who survived (alive and have a keycard)
@@ -297,7 +447,12 @@ public class GameController {
 
     // Returns the AI's hidden card value — called when revealing at round end
     public int getAIHiddenCard() {
-        return ai.getHand().get(0).getValue(); // index 0 is always the hidden card
+        ArrayList<Card> aiHand = ai.getHand();
+        if (aiHand.isEmpty()) {
+            System.err.println("GameController: AI hand is empty — cannot reveal hidden card");
+            return 0;
+        }
+        return aiHand.get(0).getValue(); // index 0 is always the hidden card
     }
 
     // Returns values of any extra cards AI drew after its opening card
@@ -313,6 +468,10 @@ public class GameController {
     // Returns the value of the last card the player drew — used by UI after hit
     public int getLastPlayerCard(Player p) {
         ArrayList<Card> hand = p.getHand();
+        if (hand.isEmpty()) {
+            System.err.println("GameController: " + p.getName() + "'s hand is empty — cannot get last card");
+            return 0;
+        }
         return hand.get(hand.size() - 1).getValue();
     }
 

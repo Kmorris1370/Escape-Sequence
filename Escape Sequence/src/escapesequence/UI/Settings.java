@@ -14,8 +14,14 @@ public class Settings extends javax.swing.JFrame {
     //No previous screen
     public Settings() {
         initComponents();
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/RulesScreen.png",590,300));
-        backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",40,40));
+        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int sw = screen.width, sh = screen.height;
+        jPanel1.setPreferredSize(screen);
+        backgroundLabel.setBounds(0, 0, sw, sh);
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Space2.png", sw, sh));
+        backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png", 40, 40));
+        soundSlider.setOpaque(false);
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
     
     /**
@@ -42,7 +48,7 @@ public class Settings extends javax.swing.JFrame {
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Settings");
-        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 590, 50));
+        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 590, 50));
 
         soundSlider.setBackground(new java.awt.Color(255, 255, 255, 50));
         soundSlider.setForeground(new java.awt.Color(102,0,0));
@@ -56,13 +62,14 @@ public class Settings extends javax.swing.JFrame {
         backButton.setBackground(new java.awt.Color(0, 0, 0, 100));
         backButton.setContentAreaFilled(false);
         backButton.setBorder(null);
+        backButton.setFocusPainted(false);
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
             }
         });
         jPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 40, 40));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 300));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

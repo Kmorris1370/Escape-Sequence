@@ -25,12 +25,18 @@ public class RulesScreen extends javax.swing.JFrame {
         this.gameController = gameController;
         initComponents();
         jPanel1.setComponentZOrder(backgroundLabel, jPanel1.getComponentCount() - 1);
-        setSize(1200,700);
+        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int sw = screen.width, sh = screen.height;
+        jPanel1.setPreferredSize(screen);
+        jPanel1.setMinimumSize(screen);
+        backgroundLabel.setBounds(0, 0, sw, sh);
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        SoundManager.enableButtonSounds(this.getContentPane());
         tutorialPane.setContentType("text/html");
         tutorialPane.setEditable(false);
         tutorialPane.setText(tutorialHTML);
         tutorialPane.setCaretPosition(0);
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/TitleScreen.png",1200,700));
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/TitleScreen.png", sw, sh));
         backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",60,60));
         
         jScrollPane1.getVerticalScrollBar().setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
@@ -261,7 +267,7 @@ public class RulesScreen extends javax.swing.JFrame {
             }
         });
         jPanel1.add(continueButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 580, 200, 70));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -12,11 +12,15 @@ public class PauseScreen extends javax.swing.JFrame {
      */
     public PauseScreen() {
         initComponents();
-        setSize(800,500);
-        setLocationRelativeTo(null);
-        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Space1.png",800,500));
-        backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",40,40));
-        tutorialButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/TextIcon.png",40,40));
+        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int sw = screen.width, sh = screen.height;
+        jPanel1.setPreferredSize(screen);
+        jPanel1.setMinimumSize(screen);
+        backgroundLabel.setBounds(0, 0, sw, sh);
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Space2.png", sw, sh));
+        backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",50,50));
+        tutorialButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/tutorial.png",50,50));
     }
     
     /**
@@ -42,11 +46,11 @@ public class PauseScreen extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        titleLabel.setFont(FontLoader.getVT323(55f));
+        titleLabel.setFont(FontLoader.getVT323(65f));
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Paused");
-        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 800, 40));
+        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 800, 40));
 
         backButton.setContentAreaFilled(false);
         backButton.setBorder(null);
@@ -57,7 +61,7 @@ public class PauseScreen extends javax.swing.JFrame {
                 backButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 40, 40));
+        jPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 50, 50));
 
         tutorialButton.setBackground(new java.awt.Color(0, 0, 0, 0));
         tutorialButton.setContentAreaFilled(false);
@@ -68,14 +72,15 @@ public class PauseScreen extends javax.swing.JFrame {
                 tutorialButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(tutorialButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 10, 40, 40));
+        jPanel1.add(tutorialButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 10, 50, 50));
 
         tutorialLabel.setFont(FontLoader.getVT323(18f));
         tutorialLabel.setForeground(new java.awt.Color(255, 255, 255));
+        tutorialLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tutorialLabel.setText("Tutorial");
-        jPanel1.add(tutorialLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 60, -1, 20));
+        jPanel1.add(tutorialLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 60, 70, 20));
 
-        resumeButton.setFont(FontLoader.getVT323(24f));
+        resumeButton.setFont(FontLoader.getVT323(30f));
         resumeButton.setBackground(new java.awt.Color(0, 0, 0, 100));
         resumeButton.setForeground(new java.awt.Color(255, 255, 255));
         resumeButton.setContentAreaFilled(false);
@@ -88,9 +93,9 @@ public class PauseScreen extends javax.swing.JFrame {
                 resumeButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(resumeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 180, 110, 40));
+        jPanel1.add(resumeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 150, 150, 60));
 
-        quitButton.setFont(FontLoader.getVT323(24f));
+        quitButton.setFont(FontLoader.getVT323(30f));
         quitButton.setBackground(new java.awt.Color(0, 0, 0, 100));
         quitButton.setForeground(new java.awt.Color(255, 255, 255));
         quitButton.setContentAreaFilled(false);
@@ -102,9 +107,9 @@ public class PauseScreen extends javax.swing.JFrame {
                 quitButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(quitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 320, 110, 40));
+        jPanel1.add(quitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 370, 150, 60));
 
-        settingsButton.setFont(FontLoader.getVT323(24f));
+        settingsButton.setFont(FontLoader.getVT323(30f));
         settingsButton.setForeground(new java.awt.Color(255, 255, 255));
         settingsButton.setText("Settings");
         settingsButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, new java.awt.Color(0, 0, 0), java.awt.Color.black, java.awt.Color.black));
@@ -115,8 +120,8 @@ public class PauseScreen extends javax.swing.JFrame {
                 settingsButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(settingsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 250, 110, 40));
-        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
+        jPanel1.add(settingsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 260, 150, 60));
+        jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,8 +140,7 @@ public class PauseScreen extends javax.swing.JFrame {
     //Settings
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
-        Settings settings = new Settings();
-        settings.setVisible(true);
+        dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     //Quit
