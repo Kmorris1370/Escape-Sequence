@@ -190,12 +190,12 @@ public class GameController {
         if (!hand.isEmpty()) hand.remove(hand.size() - 1);
     }
 
-    // REVERSE — draws a card and subtracts its value instead of adding
+    // REVERSE — removes the last drawn card from the hand (subtracts its value and removes from display)
     public void applyReverse(Player p) {
-        int val = deck.drawCard();
-        if (val != -1) {
-            p.receiveCard(new Card(-val, true));
-            System.out.println(p.getName() + " reverse -> drew " + val + ", new total: " + p.getHandTotal());
+        ArrayList<Card> hand = p.getHand();
+        if (!hand.isEmpty()) {
+            Card removed = hand.remove(hand.size() - 1);
+            System.out.println(p.getName() + " reverse -> removed " + removed.getValue() + ", new total: " + p.getHandTotal());
         }
     }
 
@@ -291,10 +291,13 @@ public class GameController {
         return best;
     }
 
-    // Returns players who are tied for the highest non-bust total; empty list if no tie
+    // Returns players who are tied for the highest non-bust total; empty list if no tie.
+    // Only triggers a tiebreaker when the tied players beat (or match) the AI — if the AI's
+    // total is higher, the AI wins outright and no PAC is in play.
     public ArrayList<Player> getTiedPlayers() {
         int best = getHighestAlivePlayerTotal();
         if (best < 0) return new ArrayList<>();
+        if (!ai.isBust() && best < ai.getHandTotal()) return new ArrayList<>();
         ArrayList<Player> tied = new ArrayList<>();
         for (Player p : players) {
             if (p.isAlive() && !p.isBust() && p.getHandTotal() == best) {

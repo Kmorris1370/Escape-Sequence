@@ -24,6 +24,8 @@ public class PauseScreen extends javax.swing.JFrame {
         backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",50,50));
         tutorialButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/tutorial.png",70,70));
 
+        SoundManager.enableButtonSounds(this.getContentPane());
+
         // Transparent slider track box
         soundSlider.setOpaque(false);
         soundSlider.setBackground(new java.awt.Color(0, 0, 0, 0));
