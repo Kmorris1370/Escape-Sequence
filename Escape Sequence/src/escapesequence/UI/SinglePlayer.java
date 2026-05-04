@@ -10,16 +10,17 @@ public class SinglePlayer extends javax.swing.JFrame {
 
     public SinglePlayer() {
         initComponents();
-        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int sw = screen.width, sh = screen.height;
-        jPanel1.setPreferredSize(screen);
-        jPanel1.setMinimumSize(screen);
+        int sw = 1200, sh = 700;
+        java.awt.Dimension fixed = new java.awt.Dimension(sw, sh);
+        jPanel1.setPreferredSize(fixed);
+        jPanel1.setMinimumSize(fixed);
         backgroundLabel.setBounds(0, 0, sw, sh);
         setSize(sw, sh);
+        setResizable(false);
+        setLocationRelativeTo(null);
         SoundManager.enableButtonSounds(this.getContentPane());
         backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/WarningScreens.png", sw, sh));
         backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png", 50, 50));
-        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**

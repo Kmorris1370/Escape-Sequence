@@ -18,6 +18,7 @@ public class GameController {
     private int pacCount;
     private GameMode gameMode;
     private boolean peekPending = false; // true after Peek used, cleared on hit or stay
+    private boolean aiStayed = false;    // multiplayer: AI has chosen to stay this round
 
     private static final int MAX_PACS = 3;
 
@@ -55,6 +56,11 @@ public class GameController {
     // Starts a new round — rebuilds deck, deals opening cards, deals specialty cards in rounds 2+
     public void startRound() {
         clearAllHands();
+        aiStayed = false;
+        peekPending = false;
+        // Reset frozen state at start of every round
+        for (Player p : players) p.setFrozen(false);
+        ai.setFrozen(false);
 
         // Rebuild and shuffle deck each round to prevent running out of cards
         deck = new Deck(players.size());
@@ -75,15 +81,50 @@ public class GameController {
         ai.receiveCard(new Card(deck.drawCard(), false));
         System.out.println("AI opening card (hidden): " + ai.getHand().get(0).getValue());
 
-        // Deal specialty cards starting round 2; AI gets 2 cards in round 3
+        // Deal specialty cards starting round 2 (players only — AI plays without specialty cards)
         if (currentRound >= 2) {
-            specialtyDeck.dealToAll(players, ai);
+            specialtyDeck.dealToAll(players);
         }
-        if (currentRound == 3) {
-            // Deal a second specialty card to the AI
-            SpecialtyCard extra = specialtyDeck.drawCard();
-            if (extra != null) ai.receiveSpecialtyCard(extra);
+    }
+
+    // ── Interactive AI Turn (multiplayer round-robin) ────────
+
+    // True if AI has chosen to stay or has busted — turn should be skipped
+    public boolean aiIsDone() {
+        return aiStayed || ai.isBust();
+    }
+
+    // Drives AI's per-turn decision in multiplayer rotation.
+    // Returns true if AI hit (drew a card), false if AI chose to stay.
+    public boolean aiTakeSingleAction() {
+        if (aiIsDone()) return false;
+        if (ai.isFrozen()) {
+            // Frozen = locked at current total = treat as stayed
+            aiStayed = true;
+            System.out.println("AI is frozen — stays at total: " + ai.getHandTotal());
+            return false;
         }
+        if (!ai.shouldHit()) {
+            aiStayed = true;
+            System.out.println("AI stays at total: " + ai.getHandTotal());
+            return false;
+        }
+        int v = deck.drawCard();
+        if (v == -1) {
+            aiStayed = true;
+            System.err.println("Deck empty during AI turn — AI forced to stay");
+            return false;
+        }
+        ai.receiveCard(new Card(v, true));
+        System.out.println("AI hit -> drew " + v + ", new total: " + ai.getHandTotal());
+        return true;
+    }
+
+    // Returns the value of the AI's most recently drawn card
+    public int getLastAICardValue() {
+        ArrayList<Card> hand = ai.getHand();
+        if (hand.isEmpty()) return 0;
+        return hand.get(hand.size() - 1).getValue();
     }
 
     // Executes the AI's full turn — hits based on round threshold
@@ -152,7 +193,10 @@ public class GameController {
     // REVERSE — draws a card and subtracts its value instead of adding
     public void applyReverse(Player p) {
         int val = deck.drawCard();
-        if (val != -1) p.receiveCard(new Card(-val, true));
+        if (val != -1) {
+            p.receiveCard(new Card(-val, true));
+            System.out.println(p.getName() + " reverse -> drew " + val + ", new total: " + p.getHandTotal());
+        }
     }
 
     // FREEZE — prevents target from hitting on their next turn
@@ -220,7 +264,8 @@ public class GameController {
         return RoundOutcome.PROCEED_NO_PAC; // tied players handled by TiebreakerRound
     }
 
-    // Returns the highest hand total among alive, non-busted players who beat (or tied) the AI
+    // Returns the highest hand total among alive, non-busted players who beat (or tied) the AI.
+    // Used by resolveOutcome to decide whether a single player should be awarded the keycard.
     private int getBestPlayerTotal() {
         int best = -1;
         for (Player p : players) {
@@ -233,16 +278,27 @@ public class GameController {
         return best;
     }
 
-    // Returns players who are tied for the best total; empty list if no tie
+    // Highest hand total among alive non-busted players, regardless of AI total —
+    // used for tiebreaker detection so cadets that tied with each other below the
+    // AI's total still get to play a tiebreaker.
+    private int getHighestAlivePlayerTotal() {
+        int best = -1;
+        for (Player p : players) {
+            if (p.isAlive() && !p.isBust()) {
+                best = Math.max(best, p.getHandTotal());
+            }
+        }
+        return best;
+    }
+
+    // Returns players who are tied for the highest non-bust total; empty list if no tie
     public ArrayList<Player> getTiedPlayers() {
-        int best = getBestPlayerTotal();
+        int best = getHighestAlivePlayerTotal();
         if (best < 0) return new ArrayList<>();
         ArrayList<Player> tied = new ArrayList<>();
         for (Player p : players) {
-            if (p.isAlive() && !p.isBust()) {
-                if (ai.isBust() || p.getHandTotal() >= ai.getHandTotal()) {
-                    if (p.getHandTotal() == best) tied.add(p);
-                }
+            if (p.isAlive() && !p.isBust() && p.getHandTotal() == best) {
+                tied.add(p);
             }
         }
         return tied.size() > 1 ? tied : new ArrayList<>();
@@ -327,31 +383,39 @@ public class GameController {
     }
 
     public String getRoundSummaryMessage(RoundOutcome outcome) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("=== END OF ROUND ").append(currentRound).append(" ===\n\n");
+        StringBuilder body = new StringBuilder();
 
         if (!isMultiplayer()) {
-            sb.append("Result: ").append(getOutcomeMessage(outcome)).append("\n");
+            body.append("Result: ").append(getOutcomeMessage(outcome)).append("\n");
             Player p = players.get(0);
-            sb.append(p.getName()).append(" total: ").append(p.getHandTotal());
-            if (p.isBust()) sb.append(" (bust)");
-            sb.append("\n");
-            sb.append("P.A.C. keycards: ").append(p.getKeycardCount()).append("\n");
-            sb.append("Status: ").append(p.isAlive() ? "Alive" : "Eliminated").append("\n");
+            body.append(p.getName()).append(" total: ").append(p.getHandTotal());
+            if (p.isBust()) body.append(" (bust)");
+            body.append("\n");
+            body.append("P.A.C. keycards: ").append(p.getKeycardCount()).append("\n");
+            body.append("Status: ").append(p.isAlive() ? "Alive" : "Eliminated").append("\n");
         } else {
             for (Player p : players) {
-                sb.append(p.getName()).append(" — Total: ").append(p.getHandTotal());
-                if (p.isBust()) sb.append(" (bust)");
-                sb.append(" | Keycards: ").append(p.getKeycardCount());
-                sb.append(" | Status: ").append(p.isAlive() ? "Alive" : "Eliminated");
-                sb.append("\n");
+                body.append(p.getName()).append(" — Total: ").append(p.getHandTotal());
+                if (p.isBust()) body.append(" (bust)");
+                body.append(" | Keycards: ").append(p.getKeycardCount());
+                body.append(" | Status: ").append(p.isAlive() ? "Alive" : "Eliminated");
+                body.append("\n");
             }
         }
 
-        sb.append("\nThe System total: ").append(ai.getHandTotal());
-        if (ai.isBust()) sb.append(" (bust)");
-        sb.append("\nTotal P.A.C.s awarded so far: ").append(pacCount).append("/").append(MAX_PACS);
+        body.append("\nThe System total: ").append(ai.getHandTotal());
+        if (ai.isBust()) body.append(" (bust)");
+        body.append("\nTotal P.A.C.s awarded so far: ").append(pacCount).append("/").append(MAX_PACS);
 
+        String title = "=== END OF ROUND " + currentRound + " ===";
+        int maxWidth = title.length();
+        for (String line : body.toString().split("\n")) {
+            if (line.length() > maxWidth) maxWidth = line.length();
+        }
+        int pad = (maxWidth - title.length()) / 2;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < pad; i++) sb.append(' ');
+        sb.append(title).append("\n\n").append(body);
         return sb.toString();
     }
 

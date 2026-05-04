@@ -42,7 +42,16 @@ public class Player {
     public void setFrozen(boolean frozen)      { isFrozen = frozen; }
     public void setHasWildCard(boolean val)    { hasWildCard = val; }
 
-    public void eliminate()                    { isAlive = false; }
+    // On death: drop specialty cards, keycards, and wild flag so dead-player
+    // queries (UI display, keycard counts, ability prompts) all see an empty hand.
+    public void eliminate() {
+        isAlive = false;
+        specialtyCards.clear();
+        hasWildCard = false;
+        hasKeycard = false;
+        keycardCount = 0;
+        pendingKeycardBonus = false;
+    }
 
     public boolean isBust()                    { return getHandTotal() > 21; }
 

@@ -3,8 +3,6 @@ package escapesequence.UI;
 
 import escapesequence.GameController;
 import java.util.ArrayList;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 /**
  * @author Akera Griffith & Kaitlyn Morris
@@ -12,19 +10,18 @@ import javax.swing.JTextArea;
  */
 public class GameOver extends javax.swing.JFrame {
 
-    private GameController gameController;
-    
     public GameOver(GameController gameController) {
-        this.gameController = gameController;
         initComponents();
-        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int sw = screen.width, sh = screen.height;
-        jPanel1.setPreferredSize(screen);
+        int sw = 1200, sh = 700;
+        java.awt.Dimension fixed = new java.awt.Dimension(sw, sh);
+        jPanel1.setPreferredSize(fixed);
+        jPanel1.setMinimumSize(fixed);
         backgroundLabel.setBounds(0, 0, sw, sh);
         setSize(sw, sh);
+        setResizable(false);
+        setLocationRelativeTo(null);
         SoundManager.enableButtonSounds(this.getContentPane());
         backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/GameOver.png", sw, sh));
-        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -47,9 +44,10 @@ public class GameOver extends javax.swing.JFrame {
 
         mainMenu.setBackground(new java.awt.Color(0, 0, 0));
         mainMenu.setFont(new java.awt.Font("VT323", 0, 48)); // NOI18N
-        mainMenu.setForeground(new java.awt.Color(198, 40, 40));
+        mainMenu.setForeground(new java.awt.Color(255, 0, 0));
         mainMenu.setText("Main Menu");
         mainMenu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        mainMenu.setContentAreaFilled(false);
         mainMenu.setFocusPainted(false);
         mainMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -150,11 +150,53 @@ public class GameDialog {
 
         JLabel msg = buildMessageLabel(prompt, 24f);
 
+        final Color BG = new Color(10, 10, 15);
+        final Color RED = new Color(198, 40, 40);
+
         JComboBox<String> combo = new JComboBox<>(options);
         combo.setFont(FontLoader.getVT323(22f));
-        combo.setForeground(new Color(198, 40, 40));
-        combo.setBackground(new Color(10, 10, 15));
-        combo.setFocusable(false); // remove focus highlight on selection
+        combo.setForeground(RED);
+        combo.setBackground(BG);
+        combo.setFocusable(false);
+        combo.setBorder(BorderFactory.createLineBorder(RED, 1));
+        combo.setOpaque(true);
+
+        // Replace the default UI button/border so no white frame is drawn
+        combo.setUI(new javax.swing.plaf.basic.BasicComboBoxUI() {
+            @Override
+            protected javax.swing.JButton createArrowButton() {
+                javax.swing.JButton b = new javax.swing.plaf.basic.BasicArrowButton(
+                        javax.swing.plaf.basic.BasicArrowButton.SOUTH,
+                        BG, BG, RED, BG);
+                b.setBorder(BorderFactory.createEmptyBorder());
+                b.setContentAreaFilled(false);
+                return b;
+            }
+        });
+
+        // Style the editor field (the visible selected value)
+        Object editorComp = combo.getEditor().getEditorComponent();
+        if (editorComp instanceof javax.swing.JComponent) {
+            ((javax.swing.JComponent) editorComp).setBackground(BG);
+            ((javax.swing.JComponent) editorComp).setForeground(RED);
+            ((javax.swing.JComponent) editorComp).setBorder(BorderFactory.createEmptyBorder(2, 6, 2, 6));
+        }
+
+        // Render dropdown items with dark bg + red text; highlighted item uses dark red, no white
+        combo.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                l.setOpaque(true);
+                l.setFont(FontLoader.getVT323(22f));
+                l.setForeground(RED);
+                l.setBackground(isSelected ? new Color(60, 10, 10) : BG);
+                l.setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
+                return l;
+            }
+        });
 
         JPanel comboPanel = new JPanel();
         comboPanel.setBackground(new Color(10, 10, 15));
@@ -201,6 +243,9 @@ public class GameDialog {
         btn.setBackground(new Color(10, 10, 15));
         btn.setContentAreaFilled(false);
         btn.setFocusPainted(false);
+        btn.setRolloverEnabled(false);
+        btn.setOpaque(false);
+        btn.setUI(new javax.swing.plaf.basic.BasicButtonUI()); // bypass L&F pressed/armed fill
         btn.setPreferredSize(new java.awt.Dimension(100, 36));
         btn.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(198, 40, 40), 2),

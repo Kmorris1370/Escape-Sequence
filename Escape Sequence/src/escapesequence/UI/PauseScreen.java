@@ -12,15 +12,27 @@ public class PauseScreen extends javax.swing.JFrame {
      */
     public PauseScreen() {
         initComponents();
-        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int sw = screen.width, sh = screen.height;
-        jPanel1.setPreferredSize(screen);
-        jPanel1.setMinimumSize(screen);
+        int sw = 1200, sh = 700;
+        java.awt.Dimension fixed = new java.awt.Dimension(sw, sh);
+        jPanel1.setPreferredSize(fixed);
+        jPanel1.setMinimumSize(fixed);
         backgroundLabel.setBounds(0, 0, sw, sh);
-        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        setSize(sw, sh);
+        setResizable(false);
+        setLocationRelativeTo(null);
         backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/Space2.png", sw, sh));
         backButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/BackArrow.png",50,50));
-        tutorialButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/tutorial.png",50,50));
+        tutorialButton.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/tutorial.png",70,70));
+
+        // Transparent slider track box
+        soundSlider.setOpaque(false);
+        soundSlider.setBackground(new java.awt.Color(0, 0, 0, 0));
+
+        // Wire slider to SoundManager volume
+        soundSlider.setMinimum(0);
+        soundSlider.setMaximum(100);
+        soundSlider.setValue(SoundManager.getVolumePercent());
+        soundSlider.addChangeListener(e -> SoundManager.setVolume(soundSlider.getValue()));
     }
     
     /**
@@ -39,18 +51,21 @@ public class PauseScreen extends javax.swing.JFrame {
         tutorialLabel = new javax.swing.JLabel();
         resumeButton = new javax.swing.JButton();
         quitButton = new javax.swing.JButton();
-        settingsButton = new javax.swing.JButton();
+        soundLabel = new javax.swing.JLabel();
+        soundSlider = new javax.swing.JSlider();
         backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setMinimumSize(new java.awt.Dimension(1200, 700));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1200, 700));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titleLabel.setFont(FontLoader.getVT323(65f));
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Paused");
-        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 800, 40));
+        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 1200, 40));
 
         backButton.setContentAreaFilled(false);
         backButton.setBorder(null);
@@ -61,7 +76,7 @@ public class PauseScreen extends javax.swing.JFrame {
                 backButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 50, 50));
+        jPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 70, 70));
 
         tutorialButton.setBackground(new java.awt.Color(0, 0, 0, 0));
         tutorialButton.setContentAreaFilled(false);
@@ -72,13 +87,13 @@ public class PauseScreen extends javax.swing.JFrame {
                 tutorialButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(tutorialButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 10, 50, 50));
+        jPanel1.add(tutorialButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 20, 70, 70));
 
         tutorialLabel.setFont(FontLoader.getVT323(18f));
         tutorialLabel.setForeground(new java.awt.Color(255, 255, 255));
         tutorialLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tutorialLabel.setText("Tutorial");
-        jPanel1.add(tutorialLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 60, 70, 20));
+        jPanel1.add(tutorialLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 100, 70, 20));
 
         resumeButton.setFont(FontLoader.getVT323(30f));
         resumeButton.setBackground(new java.awt.Color(0, 0, 0, 100));
@@ -93,7 +108,7 @@ public class PauseScreen extends javax.swing.JFrame {
                 resumeButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(resumeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 150, 150, 60));
+        jPanel1.add(resumeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 320, 240, 110));
 
         quitButton.setFont(FontLoader.getVT323(30f));
         quitButton.setBackground(new java.awt.Color(0, 0, 0, 100));
@@ -107,20 +122,18 @@ public class PauseScreen extends javax.swing.JFrame {
                 quitButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(quitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 370, 150, 60));
+        jPanel1.add(quitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 500, 240, 110));
 
-        settingsButton.setFont(FontLoader.getVT323(30f));
-        settingsButton.setForeground(new java.awt.Color(255, 255, 255));
-        settingsButton.setText("Settings");
-        settingsButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, new java.awt.Color(0, 0, 0), java.awt.Color.black, java.awt.Color.black));
-        settingsButton.setContentAreaFilled(false);
-        settingsButton.setFocusPainted(false);
-        settingsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settingsButtonActionPerformed(evt);
-            }
-        });
-        jPanel1.add(settingsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 260, 150, 60));
+        soundLabel.setFont(FontLoader.getVT323(24f));
+        soundLabel.setForeground(new java.awt.Color(255, 255, 255));
+        soundLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        soundLabel.setText("Sound");
+        jPanel1.add(soundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 220, 150, 30));
+
+        soundSlider.setBackground(new java.awt.Color(255, 255, 255, 50));
+        soundSlider.setForeground(new java.awt.Color(102,0,0));
+        soundSlider.setOpaque(true);
+        jPanel1.add(soundSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 220, 220, 30));
         jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -165,13 +178,6 @@ public class PauseScreen extends javax.swing.JFrame {
         
     }//GEN-LAST:event_resumeButtonActionPerformed
 
-    private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
-        // TODO add your handling code here:
-        Settings settings = new Settings();
-        settings.setLocationRelativeTo(this); 
-        settings.setVisible(true);
-    }//GEN-LAST:event_settingsButtonActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -213,7 +219,8 @@ public class PauseScreen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton quitButton;
     private javax.swing.JButton resumeButton;
-    private javax.swing.JButton settingsButton;
+    private javax.swing.JLabel soundLabel;
+    private javax.swing.JSlider soundSlider;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton tutorialButton;
     private javax.swing.JLabel tutorialLabel;

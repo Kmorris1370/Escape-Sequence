@@ -43,16 +43,14 @@ public class SpecialtyDeck {
         return cards.remove(0);
     }
 
-    //Deals one specialty card to each alive player and AI
-    public void dealToAll(ArrayList<Player> players, AIPlayer ai) {
+    //Deals one specialty card to each alive player
+    public void dealToAll(ArrayList<Player> players) {
         for (Player p : players) {
             if (p.isAlive()) {
                 SpecialtyCard card = drawCard();
                 if (card != null) p.receiveSpecialtyCard(card);
             }
         }
-        SpecialtyCard aiCard = drawCard();
-        if (aiCard != null) ai.receiveSpecialtyCard(aiCard);
     }
 
     public int size() { return cards.size(); }

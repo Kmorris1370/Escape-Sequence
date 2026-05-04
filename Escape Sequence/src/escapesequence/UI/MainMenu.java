@@ -5,8 +5,6 @@ package escapesequence.UI;
  * Escape Sequence Main Menu
  */
 
-import escapesequence.*; 
-
 public class MainMenu extends javax.swing.JFrame {
 
     /**
@@ -14,19 +12,18 @@ public class MainMenu extends javax.swing.JFrame {
      */
     public MainMenu() {
         initComponents();
-        setMaximumSize(null);  
-        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int sw = screen.width, sh = screen.height;
-        jPanel1.setPreferredSize(screen);
-        jPanel1.setMinimumSize(screen);
+        int sw = 1200, sh = 700;
+        java.awt.Dimension fixed = new java.awt.Dimension(sw, sh);
+        jPanel1.setPreferredSize(fixed);
+        jPanel1.setMinimumSize(fixed);
         backgroundLabel.setBounds(0, 0, sw, sh);
         setSize(sw, sh);
+        setResizable(false);
+        setLocationRelativeTo(null);
         SoundManager.enableButtonSounds(this.getContentPane());
         backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/TitleScreen.png", sw, sh));
         javax.swing.SwingUtilities.invokeLater(() -> backgroundLabel.setBounds(0, 0, sw, sh));
-        tutorialButton.setIcon(ResourceLoader.loadImageFitted("/assets/pictures/tutorial.png", 60, 60));
-        settingsButton.setIcon(ResourceLoader.loadImageFitted("/assets/pictures/Settings.png", 50, 50));
-        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        tutorialButton.setIcon(ResourceLoader.loadImageFitted("/assets/pictures/tutorial.png", 70, 70));
     }
 
     /**
@@ -39,11 +36,8 @@ public class MainMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        tutorialLabel = new javax.swing.JLabel();
         titleLabel = new javax.swing.JLabel();
         abortButton = new javax.swing.JButton();
-        settingsButton = new javax.swing.JButton();
-        settingsButton.setBackground(new java.awt.Color(0, 0, 0, 0));
         singlePlayerButton = new javax.swing.JButton();
         singlePlayerButton.setBackground(new java.awt.Color(0, 0, 0, 100));
         multiplayerButton = new javax.swing.JButton();
@@ -59,18 +53,12 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1200, 700));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tutorialLabel.setFont(FontLoader.getVT323(18f));
-        tutorialLabel.setForeground(new java.awt.Color(255, 255, 255));
-        tutorialLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        tutorialLabel.setText("Settings");
-        jPanel1.add(tutorialLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 70, 90, 20));
-
         titleLabel.setFont(FontLoader.getVT323(70f));
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Escape Sequence");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 1200, 50));
+        jPanel1.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 1200, 50));
 
         abortButton.setBackground(new java.awt.Color(0, 0, 0, 100));
         abortButton.setFont(FontLoader.getVT323(40f));
@@ -86,17 +74,6 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(abortButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 550, 150, 75));
-
-        settingsButton.setBorder(null);
-        settingsButton.setFocusPainted(false);
-        settingsButton.setOpaque(false);
-        settingsButton.setContentAreaFilled(false);
-        settingsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settingsButtonActionPerformed(evt);
-            }
-        });
-        jPanel1.add(settingsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, 50, 50));
 
         singlePlayerButton.setFont(FontLoader.getVT323(40f));
         singlePlayerButton.setContentAreaFilled(false);
@@ -134,13 +111,13 @@ public class MainMenu extends javax.swing.JFrame {
                 tutorialButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(tutorialButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 60, 60));
+        jPanel1.add(tutorialButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 20, 70, 70));
 
         tutorialLabel1.setFont(FontLoader.getVT323(18f));
         tutorialLabel1.setForeground(new java.awt.Color(255, 255, 255));
         tutorialLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tutorialLabel1.setText("Tutorial");
-        jPanel1.add(tutorialLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 80, 20));
+        jPanel1.add(tutorialLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 100, 90, 20));
         jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -182,13 +159,7 @@ public class MainMenu extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_multiplayerButtonActionPerformed
 
-    //Settings
-    private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
-        // TODO add your handling code here:
-        Settings settings = new Settings();
-        settings.setVisible(true);
-    }//GEN-LAST:event_settingsButtonActionPerformed
-    
+   
     //Tutorial
     private void tutorialButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tutorialButtonActionPerformed
         // TODO add your handling code here:
@@ -236,11 +207,9 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton multiplayerButton;
-    private javax.swing.JButton settingsButton;
     private javax.swing.JButton singlePlayerButton;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton tutorialButton;
-    private javax.swing.JLabel tutorialLabel;
     private javax.swing.JLabel tutorialLabel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -162,11 +162,24 @@ public class TiebreakerRound extends JDialog {
         SoundManager.playDeal();
         refreshCardDisplay();
         updateDisplay();
-        if (currentPlayer.isBust()) hitButton.setEnabled(false);
+
+        // Bust = player is out for the rest of the tiebreaker
+        if (currentPlayer.isBust()) {
+            playerStayed[currentPlayerIndex] = true;
+        }
+
+        // Round-robin: one action per turn, then pass
+        hitButton.setEnabled(false);
+        stayButton.setEnabled(false);
+        javax.swing.Timer t = new javax.swing.Timer(900, e -> advanceToNextPlayer());
+        t.setRepeats(false);
+        t.start();
     }
 
     private void onStay() {
         playerStayed[currentPlayerIndex] = true;
+        hitButton.setEnabled(false);
+        stayButton.setEnabled(false);
         advanceToNextPlayer();
     }
 
@@ -183,6 +196,7 @@ public class TiebreakerRound extends JDialog {
             currentPlayerIndex = next;
             currentPlayer      = tiedPlayers.get(currentPlayerIndex);
             hitButton.setEnabled(true);
+            stayButton.setEnabled(true);
             refreshCardDisplay();
             updateDisplay();
             GameDialog.showTimed((Frame) getOwner(), currentPlayer.getName() + "'s turn!", 1200);

@@ -15,16 +15,17 @@ private GameController gameController;
     public EscapeScreen(GameController gameController) {
         this.gameController = gameController;
         initComponents();
-        java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int sw = screen.width, sh = screen.height;
-        jPanel1.setPreferredSize(screen);
-        jPanel1.setMinimumSize(screen);
+        int sw = 1200, sh = 700;
+        java.awt.Dimension fixed = new java.awt.Dimension(sw, sh);
+        jPanel1.setPreferredSize(fixed);
+        jPanel1.setMinimumSize(fixed);
         backgroundLabel.setBounds(0, 0, sw, sh);
         setSize(sw, sh);
+        setResizable(false);
+        setLocationRelativeTo(null);
         SoundManager.enableButtonSounds(this.getContentPane());
         backgroundLabel.setIcon(ResourceLoader.loadImageScaled("/assets/pictures/EscapeSequence.png", sw, sh));
         populateCadets();
-        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     // Populates the cadet name labels with the names of surviving players
@@ -69,9 +70,10 @@ private GameController gameController;
 
         mainMenu.setBackground(new java.awt.Color(0, 0, 0));
         mainMenu.setFont(new java.awt.Font("VT323", 0, 48)); // NOI18N
-        mainMenu.setForeground(new java.awt.Color(198, 40, 40));
+        mainMenu.setForeground(new java.awt.Color(255, 255, 255));
         mainMenu.setText("Main Menu");
         mainMenu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        mainMenu.setContentAreaFilled(false);
         mainMenu.setFocusPainted(false);
         mainMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,23 +85,25 @@ private GameController gameController;
         cadet1.setFont(FontLoader.getVT323(65f));
         cadet1.setForeground(new java.awt.Color(255, 255, 255));
         cadet1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(cadet1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 260, 60));
+        jPanel1.add(cadet1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 260, 60));
 
         cadet2.setFont(FontLoader.getVT323(65f));
         cadet2.setForeground(new java.awt.Color(255, 255, 255));
         cadet2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(cadet2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 70, 260, 60));
+        jPanel1.add(cadet2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, 260, 60));
 
         cadet3.setFont(FontLoader.getVT323(65f));
         cadet3.setForeground(new java.awt.Color(255, 255, 255));
         cadet3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(cadet3, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 60, 260, 60));
+        jPanel1.add(cadet3, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 70, 260, 60));
 
         jLabel1.setFont(new java.awt.Font("VT323", 0, 170)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Escaped");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 216, 1200, 210));
+
+        backgroundLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/pictures/EscapeSequence.png"))); // NOI18N
         jPanel1.add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
