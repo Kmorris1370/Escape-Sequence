@@ -31,11 +31,12 @@ The deck consists of cards numbered **1–9**. Each player adds 9 cards to the d
 ### Round Outcomes
 | Result | Consequence |
 |---|---|
-| Closest to 21 without busting | Advance + receive a P.A.C. keycard |
-| Under 21 but not closest | Advance without a keycard |
+| Closest to 21 without busting (and beats AI) | Advance + receive a P.A.C. keycard |
+| Under 21 but didn't beat the AI | Advance without a keycard |
 | Over 21 (bust) | Eliminated — unless the AI also busts |
 | AI also busts | Everyone advances; closest player still gets the keycard |
-| Tie | Bonus tiebreaker round (no specialty cards) |
+| Tie among players who beat the AI | Bonus tiebreaker round (no specialty cards) |
+| AI total beats all players | AI wins the round outright — no tiebreaker, no keycard |
 
 ### Specialty Cards
 Starting in Round 2, players are dealt specialty cards that can turn the tide of any round:
@@ -43,8 +44,8 @@ Starting in Round 2, players are dealt specialty cards that can turn the tide of
 | Card | Effect |
 |---|---|
 | 🛡️ **Shield** | Return the card you just drew — it is discarded |
-| 🃏 **Wild** | Choose the value of the card yourself |
-| 🔄 **Reverse** | The drawn card is subtracted from your total instead of added |
+| 🃏 **Wild** | Choose the value of the card yourself (1–9) |
+| 🔄 **Reverse** | Removes the last card you drew (subtracts its value and removes it from the display). Must be used after at least one hit |
 | ❄️ **Freeze** | Prevent a chosen player from hitting on their next turn |
 | 🔀 **Swap** | Swap one of your face-up cards with one of the AI's |
 | 👁️ **Peek** | View the next card in the deck |
@@ -63,9 +64,10 @@ Players may hold their Round 2 specialty card and use both cards in Round 3. The
 - **1–6 Player Multiplayer** with a single AI opponent
 - **Progressive AI Difficulty** — the AI takes greater risks with each round
 - **Specialty Card System** — six unique cards that add strategy to every round
-- **In-Game Tutorial/Demo** — rules are accessible at any time during play
-- **Result Recording** — player names and outcomes are saved at the end of each game
-- **Tiebreaker Rounds** — ties are resolved in bonus rounds with no specialty cards
+- **In-Game Tutorial/Rules Screen** — rules are accessible at any time during play
+- **Tiebreaker Rounds** — ties among qualifying players are resolved in bonus rounds with no specialty cards
+- **Pause & Game Over Screens** — full game-state flow including pause, restart, and final results
+- **Sound Effects** — click, deal, win, and lose audio cues via a custom SoundManager
 - **Custom GUI** — fully designed game screens built with Java JFrame/Swing
 
 ---
@@ -74,7 +76,7 @@ Players may hold their Round 2 specialty card and use both cards in Round 3. The
 
 | Component | Technology |
 |---|---|
-| Language | Java |
+| Language | Java (JDK 11+) |
 | UI Framework | JFrame / Swing |
 | IDE | Apache NetBeans |
 | Version Control | GitHub |
@@ -89,93 +91,66 @@ Players may hold their Round 2 specialty card and use both cards in Round 3. The
 
 ### Steps
 1. Clone the repository:
-   ```
-   git clone https://github.com/your-username/escape-sequence.git
-   ```
+- git clone https://github.com/your-username/escape-sequence.git
 2. Open the project in NetBeans:
-   - File → Open Project → navigate to the cloned folder
+- File → Open Project → navigate to the cloned folder
 3. Build the project:
-   - Run → Build Project (F11)
+- Run → Build Project (F11)
 4. Run the game:
-   - Run → Run Project (F6)
-
+- Run → Run Project (F6)
 > No external libraries or dependencies are required beyond the standard Java JDK.
-
 ---
-
 ## Project Structure
 
 ```
 escape-sequence/
 ├── src/
-│   └── escapesequence/
-│       ├── AIPlayer.java                # AI opponent logic and aggression scaling
-│       ├── Card.java                    # Single card with value and face-up/down state
-│       ├── Deck.java                    # Numbered deck, scales with player count
-│       ├── EscapeSequence.java          # Entry point
-│       ├── Index.java                   # 
-│       ├── Player.java                  # Player state, hand, keycard, specialty cards
-│       ├── SpecialtyCard.java           # Specialty card types and descriptions
-│       ├── SpecialtyDeck.java           # Specialty deck, scales with player count
-│       └── UI/
-│           ├── ConfirmationScreen.java  # Confirmation pop-up screen
-│           ├── FontLoader.java          # Font load shortcut
-│           ├── Multiplayer.java         # Multiplayer screen
-│           ├── PauseScreen.java         # Pause pop-up screen
-│           ├── ResourceLoader.java      # Loads fonts and images
-│           ├── Round1.java              # 1st gameplay screen
-│           ├── Round2.java              # 2nd gameplay screen
-│           ├── Round3.java              # 3rd gameplay screen
-│           ├── RulesScreen.java         # Tutorial pop-up screen
-│           ├── Settings.java            # Settings screen
-│           ├── SinglePlayer.java        # Single player screen
-│           └── MainMenu.java      # Main menu GUI
+│ └── escapesequence/
+│ ├── AIPlayer.java # AI opponent logic and aggression scaling
+│ ├── Card.java # Single card with value and face-up/down state
+│ ├── Deck.java # Numbered deck, scales with player count
+│ ├── EscapeSequence.java # Entry point
+│ ├── GameController.java # Core game logic, outcome resolution, specialty effects
+│ ├── Player.java # Player state, hand, keycard, specialty cards
+│ ├── SpecialtyCard.java # Specialty card types and descriptions
+│ ├── SpecialtyDeck.java # Specialty deck, scales with player count
+│ └── UI/
+│ ├── EscapeScreen.java # Final escape pod / outcome screen
+│ ├── FontLoader.java # Font load shortcut
+│ ├── GameDialog.java # Custom themed dialog/message boxes
+│ ├── GameOver.java # Game over screen
+│ ├── MainMenu.java # Main menu GUI
+│ ├── Multiplayer.java # Multiplayer setup screen
+│ ├── PauseScreen.java # Pause pop-up screen
+│ ├── ResourceLoader.java # Loads fonts and images
+│ ├── Round1.java # 1st gameplay screen
+│ ├── Round2.java # 2nd gameplay screen
+│ ├── Round3.java # 3rd gameplay screen
+│ ├── RulesScreen.java # Tutorial / rules pop-up screen
+│ ├── SinglePlayer.java # Single player setup screen
+│ ├── SoundManager.java # Plays click / deal / win / lose SFX
+│ └── TiebreakerRound.java # Bonus tiebreaker round dialog
 ├── assets/
-│   ├── pictures/                        # Game art and card images
-│   └── font/                            # Font files
+│ ├── pictures/ # Game art and card images
+│ ├── font/ # Font files (VT323)
+│ └── sounds/ # SFX (click, deal, win, lose)
 ├── docs/
-│   ├── SRS.pdf                          # Software Requirements Specification
-│   ├── ProjectManagementPlan.pdf        # Project Management Plan
-│   ├── GameDesignDocument.pdf           # Game Design Document
-│   ├── ActivityDiagram.png              # UML Activity Diagram
-│   └── UseCaseDiagram.png               # UML Use Case Diagram
-├── tutorials/                           
+│ ├── SRS.pdf # Software Requirements Specification
+│ ├── ProjectManagementPlan.pdf # Project Management Plan
+│ ├── GameDesignDocument.pdf # Game Design Document
+│ ├── ActivityDiagram.png # UML Activity Diagram
+│ └── UseCaseDiagram.png # UML Use Case Diagram
+├── tutorials/
 ├── .gitignore
 ├── LICENSE
 ├── CONTRIBUTING.md
 └── README.md
 ```
-
----
-
-## Current Status
-
-| Phase | Status |
-|---|---|
-| Game Narrative & Screen Designs | ✅ Complete |
-| Core Game Mechanics | 🔄 In Progress |
-| User Interface | 🔄 In Progress |
-| Settings & Additional Features | ⏳ Not Started |
-| Multiplayer & Data | ⏳ Not Started |
-| Testing | ⏳ Not Started |
-| Final Delivery | ⏳ Not Started |
-
-**Target Completion:** May 2026
-
----
-## Acknowledgemnts 
-#### Visual aesthetic used from Mouthwashing by Wrong Organ.
----
 ## Team
-
 | Name | Role |
 |---|---|
 | Kaitlyn Morris | Project Manager / Developer |
 | Akera Griffith | Head Developer |
-
 *The Space Cadets — CS 491*
-
 ---
-
 *Licensed under the MIT License*
-
