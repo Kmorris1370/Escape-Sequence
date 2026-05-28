@@ -726,6 +726,9 @@
           </Constraints>
         </Component>
         <Component class="javax.swing.JLabel" name="keycardLabel1">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="keycardLabel1.setFont(FontLoader.getVT323(40f));&#xa;&#xa;keycardLabel1.setForeground(java.awt.Color.WHITE);"/>
           </AuxValues>

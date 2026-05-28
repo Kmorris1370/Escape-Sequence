@@ -1150,6 +1150,7 @@ public class Round2 extends javax.swing.JFrame {
         keycardLabel1.setFont(FontLoader.getVT323(40f));
 
         keycardLabel1.setForeground(java.awt.Color.WHITE);
+        keycardLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jPanel1.add(keycardLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 250, 150, 40));
 
         p1Name.setFont(FontLoader.getVT323(40f));
